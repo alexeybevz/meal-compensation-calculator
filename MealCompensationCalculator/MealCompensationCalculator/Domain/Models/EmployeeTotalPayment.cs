@@ -5,26 +5,19 @@ namespace MealCompensationCalculator.Domain.Models
 {
     public class EmployeeTotalPayment
     {
-        private readonly List<Payment> _payments;
-
         public Employee Employee { get; }
-        public IEnumerable<Payment> Payments => _payments;
+        public IEnumerable<Payment> Payments { get; }
 
-        public EmployeeTotalPayment(Employee employee)
+        public EmployeeTotalPayment(Employee employee, IEnumerable<Payment> payments)
         {
             if (employee == null)
                 throw new ArgumentException("employee is null");
 
+            if (payments == null)
+                throw new ArgumentException("payments is null");
+
             Employee = employee;
-            _payments = new List<Payment>();
-        }
-
-        public void AddPayment(Payment payment)
-        {
-            if (payment == null)
-                throw new ArgumentException("payment is null");
-
-            _payments.Add(payment);
+            Payments = payments;
         }
     }
 }
