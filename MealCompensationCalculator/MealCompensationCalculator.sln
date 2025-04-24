@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MealCompensationCalculator", "MealCompensationCalculator\MealCompensationCalculator.csproj", "{8BC79391-5C4B-414A-A850-EB7754DE4299}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MealCompensationCalculatorTest", "MealCompensationCalculatorTest\MealCompensationCalculatorTest.csproj", "{F68830E3-2D02-46E2-A6E3-7BD5A0106C8B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -15,6 +17,10 @@ Global
 		{8BC79391-5C4B-414A-A850-EB7754DE4299}.Debug|x64.Build.0 = Debug|x64
 		{8BC79391-5C4B-414A-A850-EB7754DE4299}.Release|x64.ActiveCfg = Release|x64
 		{8BC79391-5C4B-414A-A850-EB7754DE4299}.Release|x64.Build.0 = Release|x64
+		{F68830E3-2D02-46E2-A6E3-7BD5A0106C8B}.Debug|x64.ActiveCfg = Debug|x64
+		{F68830E3-2D02-46E2-A6E3-7BD5A0106C8B}.Debug|x64.Build.0 = Debug|x64
+		{F68830E3-2D02-46E2-A6E3-7BD5A0106C8B}.Release|x64.ActiveCfg = Release|x64
+		{F68830E3-2D02-46E2-A6E3-7BD5A0106C8B}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
