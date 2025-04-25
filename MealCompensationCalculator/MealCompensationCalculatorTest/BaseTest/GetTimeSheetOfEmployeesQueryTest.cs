@@ -6,7 +6,7 @@ using MealCompensationCalculator.Domain.Queries;
 using Moq;
 using Xunit;
 
-namespace MealCompensationCalculatorTest
+namespace MealCompensationCalculatorTest.BaseTest
 {
     public class GetTimeSheetOfEmployeesQueryTest
     {

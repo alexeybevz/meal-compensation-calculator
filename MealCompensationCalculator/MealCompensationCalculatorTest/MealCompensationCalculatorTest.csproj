@@ -65,8 +65,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GetTimeSheetOfEmployeesQueryTest.cs" />
-    <Compile Include="GetTotalPayOfEmployeesQueryTest.cs" />
+    <Compile Include="BaseTest\GetTimeSheetOfEmployeesQueryTest.cs" />
+    <Compile Include="BaseTest\GetTotalPayOfEmployeesQueryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
