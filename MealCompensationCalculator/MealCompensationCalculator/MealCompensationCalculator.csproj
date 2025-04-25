@@ -83,9 +83,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Domain\Queries\IGetEmployeeTotalPayments.cs" />
+    <Compile Include="Domain\Models\TotalPayOfEmployees.cs" />
+    <Compile Include="Domain\Queries\IGetTotalPayOfEmployeesQuery.cs" />
     <Compile Include="Domain\Models\Employee.cs" />
-    <Compile Include="Domain\Models\EmployeeTotalPayment.cs" />
+    <Compile Include="Domain\Models\EmployeePayments.cs" />
     <Compile Include="Domain\Models\Payment.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

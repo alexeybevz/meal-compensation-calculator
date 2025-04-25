@@ -14,5 +14,12 @@
         /// Подразделение
         /// </summary>
         public string Department { get; set; }
+
+        public Employee(int employeeNumber, string fullName, string department)
+        {
+            EmployeeNumber = employeeNumber;
+            FullName = fullName;
+            Department = department;
+        }
     }
 }

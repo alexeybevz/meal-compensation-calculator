@@ -20,5 +20,13 @@ namespace MealCompensationCalculator.Domain.Models
         /// Наличная оплата
         /// </summary>
         public decimal CostCash { get; set; }
+
+        public Payment(DateTime transactionDateTime, decimal cost, decimal costCashless, decimal costCash)
+        {
+            TransactionDateTime = transactionDateTime;
+            Cost = cost;
+            CostCashless = costCashless;
+            CostCash = costCash;
+        }
     }
 }
