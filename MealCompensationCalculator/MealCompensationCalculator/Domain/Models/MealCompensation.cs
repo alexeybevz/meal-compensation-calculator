@@ -119,12 +119,12 @@ namespace MealCompensationCalculator.Domain.Models
         }
     }
 
-    internal interface ITypeCompensationCalculator
+    internal interface ICompensationTypeCalculator
     {
         decimal Execute(IEnumerable<Payment> payments);
     }
 
-    internal class DayCompensationCalculator : ITypeCompensationCalculator
+    internal class DayCompensationCalculator : ICompensationTypeCalculator
     {
         private readonly MealCompensation _dayCompensation;
         private readonly MealCompensation _dayEveningCompensation;
@@ -150,7 +150,7 @@ namespace MealCompensationCalculator.Domain.Models
         }
     }
 
-    internal class DayEveningCompensationCalculator : ITypeCompensationCalculator
+    internal class DayEveningCompensationCalculator : ICompensationTypeCalculator
     {
         private readonly MealCompensation _dayCompensation;
         private readonly MealCompensation _dayEveningCompensation;
@@ -175,7 +175,7 @@ namespace MealCompensationCalculator.Domain.Models
         }
     }
 
-    internal class NotDefinedCompensationCalculator : ITypeCompensationCalculator
+    internal class NotDefinedCompensationCalculator : ICompensationTypeCalculator
     {
         public decimal Execute(IEnumerable<Payment> payments)
         {
@@ -185,9 +185,9 @@ namespace MealCompensationCalculator.Domain.Models
 
     internal class TypeCompensationCalculatorFactory
     {
-        private readonly ITypeCompensationCalculator _dayCompensationCalculator;
-        private readonly ITypeCompensationCalculator _dayEveningCompensationCalculator;
-        private readonly ITypeCompensationCalculator _notDefinedCalculator;
+        private readonly ICompensationTypeCalculator _dayCompensationCalculator;
+        private readonly ICompensationTypeCalculator _dayEveningCompensationCalculator;
+        private readonly ICompensationTypeCalculator _notDefinedCalculator;
 
         public TypeCompensationCalculatorFactory(MealCompensation dayCompensation, MealCompensation dayEveningCompensation)
         {
@@ -196,7 +196,7 @@ namespace MealCompensationCalculator.Domain.Models
             _notDefinedCalculator = new NotDefinedCompensationCalculator();
         }
 
-        public ITypeCompensationCalculator GetCalculator(TypeCompensation typeCompensation)
+        public ICompensationTypeCalculator GetCalculator(TypeCompensation typeCompensation)
         {
             switch (typeCompensation)
             {
