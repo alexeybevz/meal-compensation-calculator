@@ -61,7 +61,7 @@ namespace MealCompensationCalculatorTest.BaseTest
                 new TimeSheetDay(31, "Я", "8"),
             };
 
-            var employeeTimeSheet = new List<EmployeeTimeSheet>() {new EmployeeTimeSheet(employee, timeSheetDays)};
+            var employeeTimeSheet = new List<EmployeeTimeSheet>() {new EmployeeTimeSheet(employee, timeSheetDays.ToDictionary(x => x.Day))};
             var timeSheetOfEmployees = new TimeSheetOfEmployees(employeeTimeSheet);
 
             Setup(x => x.Execute())

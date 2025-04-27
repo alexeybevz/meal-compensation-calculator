@@ -6,18 +6,12 @@ namespace MealCompensationCalculator.Domain.Models
     public class EmployeeTimeSheet
     {
         public EmployeeFromTimeSheet Employee { get; }
-        public IEnumerable<TimeSheetDay> TimeSheetDays { get; }
+        public IReadOnlyDictionary<int, TimeSheetDay> TimeSheetDays { get; }
 
-        public EmployeeTimeSheet(EmployeeFromTimeSheet employee, IEnumerable<TimeSheetDay> timeSheetDays)
+        public EmployeeTimeSheet(EmployeeFromTimeSheet employee, IReadOnlyDictionary<int, TimeSheetDay> timeSheetDays)
         {
-            if (employee == null)
-                throw new ArgumentException("employee is null");
-
-            if (timeSheetDays == null)
-                throw new ArgumentException("payments is null");
-
-            Employee = employee;
-            TimeSheetDays = timeSheetDays;
+            Employee = employee ?? throw new ArgumentException("employee is null");
+            TimeSheetDays = timeSheetDays ?? throw new ArgumentException("payments is null");
         }
     }
 }

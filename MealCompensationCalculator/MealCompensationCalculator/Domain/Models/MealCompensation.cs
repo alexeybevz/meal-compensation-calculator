@@ -27,7 +27,7 @@ namespace MealCompensationCalculator.Domain.Models
 
     internal class EmployeeMapper
     {
-        public List<EmployeeTimeSheet> GetEmployeeFromTimeSheets(TimeSheetOfEmployees timeSheetOfEmployees, Employee employee)
+        public IEnumerable<EmployeeTimeSheet> GetEmployeeFromTimeSheets(TimeSheetOfEmployees timeSheetOfEmployees, Employee employee)
         {
             return timeSheetOfEmployees.EmployeesTimeSheets
                 .Where(x => x.Employee.EmployeeNumber == employee.EmployeeNumber).ToList();
@@ -51,41 +51,41 @@ namespace MealCompensationCalculator.Domain.Models
 
         public List<CompensationResult> Execute(TotalPayOfEmployees totalPayOfEmployees, TimeSheetOfEmployees timeSheetOfEmployees)
         {
-            var result = new List<CompensationResult>();
+            var results = new List<CompensationResult>();
 
             foreach (var employeeTotalPayment in totalPayOfEmployees.EmployeesTotalPayments)
             {
-                var employeeFromTimeSheet = _employeeMapper.GetEmployeeFromTimeSheets(timeSheetOfEmployees, employeeTotalPayment.Employee);
-                if (employeeFromTimeSheet == null || !employeeFromTimeSheet.Any())
+                var timeSheetEmployees = _employeeMapper.GetEmployeeFromTimeSheets(timeSheetOfEmployees, employeeTotalPayment.Employee).ToList();
+                if (!timeSheetEmployees.Any())
+                {
+                    results.Add(new CompensationResult(employeeTotalPayment, 0));
                     continue;
-
-                var empPays = employeeTotalPayment.Payments.GroupBy(x => x.TransactionDateTime.Day).Select(x => new
-                {
-                    Day = x.Key,
-                    Pays = x.ToList()
-                }).ToList();
-
-                decimal employeeTotalCompensation = 0;
-
-                foreach (var empPay in empPays)
-                {
-                    var day = employeeFromTimeSheet.SelectMany(x => x.TimeSheetDays)
-                        .FirstOrDefault(x => x.Day == empPay.Day);
-
-                    if (day == null)
-                        continue;
-
-                    var compensation = _compensationTypeCalculators
-                        .Where(x => x.CanApply(day.ScheduleOfWork, day.Shift))
-                        .Sum(x => x.Execute(empPay.Pays));
-
-                    employeeTotalCompensation += compensation;
                 }
 
-                result.Add(new CompensationResult(employeeTotalPayment, employeeTotalCompensation));
+                var timeSheetDaysByDay = timeSheetEmployees
+                    .SelectMany(x => x.TimeSheetDays)
+                    .GroupBy(x => x.Key)
+                    .ToDictionary(x => x.Key, x => x.FirstOrDefault().Value);
+
+                var paysByDays = employeeTotalPayment
+                    .Payments
+                    .GroupBy(x => x.TransactionDateTime.Day)
+                    .ToDictionary(x => x.Key, x => x.ToList());
+
+                var employeeTotalCompensation = paysByDays.Sum(paysByDay =>
+                {
+                    if (!timeSheetDaysByDay.TryGetValue(paysByDay.Key, out var day))
+                        return 0m;
+
+                    return _compensationTypeCalculators
+                        .Where(x => x.CanApply(day.ScheduleOfWork, day.Shift))
+                        .Sum(x => x.Execute(paysByDay.Value));
+                });
+
+                results.Add(new CompensationResult(employeeTotalPayment, employeeTotalCompensation));
             }
 
-            return result;
+            return results;
         }
     }
 
