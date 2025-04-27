@@ -36,12 +36,16 @@ namespace MealCompensationCalculator.Domain.Models
 
     public class CompensationCalculator
     {
-        private readonly TypeCompensationCalculatorFactory _compensationCalculatorFactory;
+        private readonly IEnumerable<ICompensationTypeCalculator> _compensationTypeCalculators;
         private readonly EmployeeMapper _employeeMapper;
 
         public CompensationCalculator(MealCompensation dayCompensation, MealCompensation dayEveningCompensation)
         {
-            _compensationCalculatorFactory = new TypeCompensationCalculatorFactory(dayCompensation, dayEveningCompensation);
+            _compensationTypeCalculators = new List<ICompensationTypeCalculator>()
+            {
+                new DayCompensationCalculator(dayCompensation, dayEveningCompensation),
+                new DayEveningCompensationCalculator(dayCompensation, dayEveningCompensation),
+            };
             _employeeMapper = new EmployeeMapper();
         }
 
@@ -71,10 +75,9 @@ namespace MealCompensationCalculator.Domain.Models
                     if (day == null)
                         continue;
 
-                    var typeCompensation = GetTypeCompensation(day.ScheduleOfWork, day.Shift);
-
-                    var compensationCalculator = _compensationCalculatorFactory.GetCalculator(typeCompensation);
-                    var compensation = compensationCalculator.Execute(empPay.Pays);
+                    var compensation = _compensationTypeCalculators
+                        .Where(x => x.CanApply(day.ScheduleOfWork, day.Shift))
+                        .Sum(x => x.Execute(empPay.Pays));
 
                     employeeTotalCompensation += compensation;
                 }
@@ -83,27 +86,6 @@ namespace MealCompensationCalculator.Domain.Models
             }
 
             return result;
-        }
-
-        private TypeCompensation GetTypeCompensation(string scheduleOfWork, string shift)
-        {
-            if (string.IsNullOrEmpty(scheduleOfWork))
-                return TypeCompensation.NotDefined;
-
-            var shiftParseResult = Decimal.TryParse(shift, out var shiftDecimal);
-
-            var daySOWs = new[] {"ПК", "Я/ПК", "Я/ПК/Г", "Я/Г", "Я/С", "Я/ДС"};
-            var dayEveningSOWs = new[] { "Я/ВЧ", "Я/Н", "РВ", "РВ/ВЧ", "НП", "РП", "Я/ПК/ВЧ", "Я/С/ВЧ" };
-
-            if (daySOWs.Contains(scheduleOfWork) && !string.IsNullOrEmpty(shift)
-                || shiftParseResult && scheduleOfWork == "Я" && shiftDecimal <= 8)
-                return TypeCompensation.Day;
-
-            if (dayEveningSOWs.Any(x => scheduleOfWork.Contains(x)) && !string.IsNullOrEmpty(shift)
-                || shiftParseResult && scheduleOfWork == "Я" && shiftDecimal > 8)
-                return TypeCompensation.DayEvening;
-
-            return TypeCompensation.NotDefined;
         }
     }
 
@@ -122,6 +104,7 @@ namespace MealCompensationCalculator.Domain.Models
     internal interface ICompensationTypeCalculator
     {
         decimal Execute(IEnumerable<Payment> payments);
+        bool CanApply(string scheduleOfWork, string shift);
     }
 
     internal class DayCompensationCalculator : ICompensationTypeCalculator
@@ -148,6 +131,18 @@ namespace MealCompensationCalculator.Domain.Models
                 ? firstPayment.Cost
                 : _dayCompensation.Compensation;
         }
+
+        public bool CanApply(string scheduleOfWork, string shift)
+        {
+            if (string.IsNullOrEmpty(scheduleOfWork))
+                return false;
+
+            var daySOWs = new[] { "ПК", "Я/ПК", "Я/ПК/Г", "Я/Г", "Я/С", "Я/ДС" };
+            var shiftParseResult = decimal.TryParse(shift, out var shiftDecimal);
+
+            return (daySOWs.Contains(scheduleOfWork) && !string.IsNullOrEmpty(shift)
+                    || shiftParseResult && scheduleOfWork == "Я" && shiftDecimal <= 8);
+        }
     }
 
     internal class DayEveningCompensationCalculator : ICompensationTypeCalculator
@@ -173,49 +168,17 @@ namespace MealCompensationCalculator.Domain.Models
                 ? totalCost
                 : _dayEveningCompensation.Compensation;
         }
-    }
 
-    internal class NotDefinedCompensationCalculator : ICompensationTypeCalculator
-    {
-        public decimal Execute(IEnumerable<Payment> payments)
+        public bool CanApply(string scheduleOfWork, string shift)
         {
-            return 0;
+            if (string.IsNullOrEmpty(scheduleOfWork))
+                return false;
+
+            var dayEveningSOWs = new[] { "Я/ВЧ", "Я/Н", "РВ", "РВ/ВЧ", "НП", "РП", "Я/ПК/ВЧ", "Я/С/ВЧ" };
+            var shiftParseResult = decimal.TryParse(shift, out var shiftDecimal);
+
+            return (dayEveningSOWs.Any(x => scheduleOfWork.Contains(x)) && !string.IsNullOrEmpty(shift)
+                    || shiftParseResult && scheduleOfWork == "Я" && shiftDecimal > 8);
         }
-    }
-
-    internal class TypeCompensationCalculatorFactory
-    {
-        private readonly ICompensationTypeCalculator _dayCompensationCalculator;
-        private readonly ICompensationTypeCalculator _dayEveningCompensationCalculator;
-        private readonly ICompensationTypeCalculator _notDefinedCalculator;
-
-        public TypeCompensationCalculatorFactory(MealCompensation dayCompensation, MealCompensation dayEveningCompensation)
-        {
-            _dayCompensationCalculator = new DayCompensationCalculator(dayCompensation, dayEveningCompensation);
-            _dayEveningCompensationCalculator = new DayEveningCompensationCalculator(dayCompensation, dayEveningCompensation);
-            _notDefinedCalculator = new NotDefinedCompensationCalculator();
-        }
-
-        public ICompensationTypeCalculator GetCalculator(TypeCompensation typeCompensation)
-        {
-            switch (typeCompensation)
-            {
-                case TypeCompensation.Day:
-                    return _dayCompensationCalculator;
-                case TypeCompensation.DayEvening:
-                    return _dayEveningCompensationCalculator;
-                case TypeCompensation.NotDefined:
-                    return _notDefinedCalculator;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-    }
-
-    internal enum TypeCompensation
-    {
-        NotDefined,
-        Day,
-        DayEvening
     }
 }
