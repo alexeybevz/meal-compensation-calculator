@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using MealCompensationCalculator.Domain.Models;
 using Xunit;
 
@@ -15,23 +16,8 @@ namespace MealCompensationCalculatorTest.BaseTest
             var getTimeSheetOfEmployeesQueryMock = new GetTimeSheetOfEmployeesQueryMock().Execute().Object;
             var timeSheetOfEmployees = getTimeSheetOfEmployeesQueryMock.Execute().Result;
 
-            var dayCompensation = new MealCompensation()
-            {
-                Compensation = 70,
-                StartCompensationHour = 11,
-                StartCompensationMinute = 0,
-                EndCompensationHour = 14,
-                EndCompensationMinute = 0
-            };
-
-            var dayEveningCompensation = new MealCompensation()
-            {
-                Compensation = 110,
-                StartCompensationHour = 16,
-                StartCompensationMinute = 30,
-                EndCompensationHour = 17,
-                EndCompensationMinute = 30
-            };
+            var dayCompensation = new MealCompensation(70, new TimeSpan(11, 0, 0), new TimeSpan(14, 0, 0));
+            var dayEveningCompensation = new MealCompensation(110, new TimeSpan(16, 30, 0), new TimeSpan(17, 30, 0));
 
             var compensationCalculator = new CompensationCalculator(dayCompensation, dayEveningCompensation);
             var result = compensationCalculator.Execute(totalPayOfEmployees, timeSheetOfEmployees);

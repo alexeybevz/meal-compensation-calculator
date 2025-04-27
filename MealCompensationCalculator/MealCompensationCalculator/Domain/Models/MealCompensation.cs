@@ -6,12 +6,23 @@ namespace MealCompensationCalculator.Domain.Models
 {
     public class MealCompensation
     {
-        public int StartCompensationHour { get; set; }
-        public int StartCompensationMinute { get; set; }
-        public int EndCompensationHour { get; set; }
-        public int EndCompensationMinute { get; set; }
+        public TimeSpan StartTimeCompensation { get; }
+        public TimeSpan EndTimeCompensation { get; }
 
-        public decimal Compensation { get; set; }
+        public decimal Compensation { get; }
+
+        public MealCompensation(decimal compensation, TimeSpan startTimeCompensation, TimeSpan endTimeCompensation)
+        {
+            Compensation = compensation;
+            StartTimeCompensation = startTimeCompensation;
+            EndTimeCompensation = endTimeCompensation;
+        }
+
+        public bool IsDateFallsToCompensationPeriod(DateTime dateTimeTransaction)
+        {
+            return dateTimeTransaction.TimeOfDay >= StartTimeCompensation &&
+                   dateTimeTransaction.TimeOfDay <= EndTimeCompensation;
+        }
     }
 
     internal class EmployeeMapper
@@ -127,7 +138,9 @@ namespace MealCompensationCalculator.Domain.Models
 
         public decimal Execute(IEnumerable<Payment> payments)
         {
-            var firstPayment = payments?.FirstOrDefault(x => IsDateFallsToCompensationPeriod(x.TransactionDateTime));
+            var firstPayment = payments?.FirstOrDefault(x =>
+                _dayCompensation.IsDateFallsToCompensationPeriod(x.TransactionDateTime) ||
+                _dayEveningCompensation.IsDateFallsToCompensationPeriod(x.TransactionDateTime));
             
             if (firstPayment == null)
                 return 0;
@@ -135,20 +148,6 @@ namespace MealCompensationCalculator.Domain.Models
             return firstPayment.Cost <= _dayCompensation.Compensation
                 ? firstPayment.Cost
                 : _dayCompensation.Compensation;
-        }
-
-        private bool IsDateFallsToCompensationPeriod(DateTime dateTimeTransaction)
-        {
-            var date = dateTimeTransaction.Date;
-
-            var d1 = new DateTime(date.Year, date.Month, date.Day, _dayCompensation.StartCompensationHour, _dayCompensation.StartCompensationMinute, 0);
-            var d2 = new DateTime(date.Year, date.Month, date.Day, _dayCompensation.EndCompensationHour, _dayCompensation.EndCompensationMinute, 0);
-
-            var d3 = new DateTime(date.Year, date.Month, date.Day, _dayEveningCompensation.StartCompensationHour, _dayEveningCompensation.StartCompensationMinute, 0);
-            var d4 = new DateTime(date.Year, date.Month, date.Day, _dayEveningCompensation.EndCompensationHour, _dayEveningCompensation.EndCompensationMinute, 0);
-
-            return d1 <= dateTimeTransaction && dateTimeTransaction <= d2 ||
-                   d3 <= dateTimeTransaction && dateTimeTransaction <= d4;
         }
     }
 
@@ -165,21 +164,20 @@ namespace MealCompensationCalculator.Domain.Models
 
         public decimal Execute(IEnumerable<Payment> payments)
         {
-            throw new System.NotImplementedException();
+            var totalCost = payments
+                .Where(x =>
+                    _dayCompensation.IsDateFallsToCompensationPeriod(x.TransactionDateTime) ||
+                    _dayEveningCompensation.IsDateFallsToCompensationPeriod(x.TransactionDateTime))
+                .Sum(x => x.Cost);
+
+            return totalCost <= _dayEveningCompensation.Compensation
+                ? totalCost
+                : _dayEveningCompensation.Compensation;
         }
     }
 
     internal class NotDefinedCompensationCalculator : ITypeCompensationCalculator
     {
-        private readonly MealCompensation _dayCompensation;
-        private readonly MealCompensation _dayEveningCompensation;
-
-        public NotDefinedCompensationCalculator(MealCompensation dayCompensation, MealCompensation dayEveningCompensation)
-        {
-            _dayCompensation = dayCompensation;
-            _dayEveningCompensation = dayEveningCompensation;
-        }
-
         public decimal Execute(IEnumerable<Payment> payments)
         {
             return 0;
@@ -196,7 +194,7 @@ namespace MealCompensationCalculator.Domain.Models
         {
             _dayCompensationCalculator = new DayCompensationCalculator(dayCompensation, dayEveningCompensation);
             _dayEveningCompensationCalculator = new DayEveningCompensationCalculator(dayCompensation, dayEveningCompensation);
-            _notDefinedCalculator = new NotDefinedCompensationCalculator(dayCompensation, dayEveningCompensation);
+            _notDefinedCalculator = new NotDefinedCompensationCalculator();
         }
 
         public ITypeCompensationCalculator GetCalculator(TypeCompensation typeCompensation)
