@@ -83,6 +83,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\CompensationCalculator.cs" />
+    <Compile Include="Domain\Models\CompensationResult.cs" />
+    <Compile Include="Services\DayCompensationCalculator.cs" />
+    <Compile Include="Services\DayEveningCompensationCalculator.cs" />
+    <Compile Include="Services\EmployeeMapper.cs" />
+    <Compile Include="Domain\Services\ICompensationTypeCalculator.cs" />
     <Compile Include="Domain\Models\MealCompensation.cs" />
     <Compile Include="Domain\Models\EmployeeFromTimeSheet.cs" />
     <Compile Include="Domain\Models\EmployeeTimeSheet.cs" />

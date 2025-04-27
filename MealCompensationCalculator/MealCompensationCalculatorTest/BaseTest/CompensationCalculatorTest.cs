@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using MealCompensationCalculator.Domain.Models;
+using MealCompensationCalculator.Services;
 using Xunit;
 
 namespace MealCompensationCalculatorTest.BaseTest
