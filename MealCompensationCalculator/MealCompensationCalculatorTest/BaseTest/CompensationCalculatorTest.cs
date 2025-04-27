@@ -7,7 +7,7 @@ namespace MealCompensationCalculatorTest.BaseTest
     public class CompensationCalculatorTest
     {
         [Fact]
-        public void Test()
+        public void CalcDayCompensationTest()
         {
             var getTotalPayOfEmployeesQueryMock = new GetTotalPayOfEmployeesQueryMock().Execute().Object;
             var totalPayOfEmployees = getTotalPayOfEmployeesQueryMock.Execute().Result;

@@ -16,16 +16,9 @@ namespace MealCompensationCalculator.Domain.Models
 
     internal class EmployeeMapper
     {
-        private readonly TimeSheetOfEmployees _timeSheetOfEmployees;
-
-        public EmployeeMapper(TimeSheetOfEmployees timeSheetOfEmployees)
+        public List<EmployeeTimeSheet> GetEmployeeFromTimeSheets(TimeSheetOfEmployees timeSheetOfEmployees, Employee employee)
         {
-            _timeSheetOfEmployees = timeSheetOfEmployees;
-        }
-
-        public List<EmployeeTimeSheet> GetEmployeeFromTimeSheets(Employee employee)
-        {
-            return _timeSheetOfEmployees.EmployeesTimeSheets
+            return timeSheetOfEmployees.EmployeesTimeSheets
                 .Where(x => x.Employee.EmployeeNumber == employee.EmployeeNumber).ToList();
         }
     }
@@ -33,25 +26,25 @@ namespace MealCompensationCalculator.Domain.Models
     public class CompensationCalculator
     {
         private readonly TypeCompensationCalculatorFactory _compensationCalculatorFactory;
+        private readonly EmployeeMapper _employeeMapper;
 
         public CompensationCalculator(MealCompensation dayCompensation, MealCompensation dayEveningCompensation)
         {
             _compensationCalculatorFactory = new TypeCompensationCalculatorFactory(dayCompensation, dayEveningCompensation);
+            _employeeMapper = new EmployeeMapper();
         }
 
         public List<CompensationResult> Execute(TotalPayOfEmployees totalPayOfEmployees, TimeSheetOfEmployees timeSheetOfEmployees)
         {
             var result = new List<CompensationResult>();
 
-            var employeeMapper = new EmployeeMapper(timeSheetOfEmployees);
-
             foreach (var employeeTotalPayment in totalPayOfEmployees.EmployeesTotalPayments)
             {
-                var employeeFromTimeSheet = employeeMapper.GetEmployeeFromTimeSheets(employeeTotalPayment.Employee);
+                var employeeFromTimeSheet = _employeeMapper.GetEmployeeFromTimeSheets(timeSheetOfEmployees, employeeTotalPayment.Employee);
                 if (employeeFromTimeSheet == null || !employeeFromTimeSheet.Any())
                     continue;
 
-                var list = employeeTotalPayment.Payments.GroupBy(x => x.TransactionDateTime.Day).Select(x => new
+                var empPays = employeeTotalPayment.Payments.GroupBy(x => x.TransactionDateTime.Day).Select(x => new
                 {
                     Day = x.Key,
                     Pays = x.ToList()
@@ -59,18 +52,18 @@ namespace MealCompensationCalculator.Domain.Models
 
                 decimal employeeTotalCompensation = 0;
 
-                foreach (var grp in list)
+                foreach (var empPay in empPays)
                 {
-                    var obj = employeeFromTimeSheet.SelectMany(x => x.TimeSheetDays)
-                        .FirstOrDefault(x => x.Day == grp.Day);
+                    var day = employeeFromTimeSheet.SelectMany(x => x.TimeSheetDays)
+                        .FirstOrDefault(x => x.Day == empPay.Day);
 
-                    if (obj == null)
+                    if (day == null)
                         continue;
 
-                    var typeCompensation = GetTypeCompensation(obj.ScheduleOfWork, obj.Shift);
+                    var typeCompensation = GetTypeCompensation(day.ScheduleOfWork, day.Shift);
 
                     var compensationCalculator = _compensationCalculatorFactory.GetCalculator(typeCompensation);
-                    var compensation = compensationCalculator.Execute(grp.Pays);
+                    var compensation = compensationCalculator.Execute(empPay.Pays);
 
                     employeeTotalCompensation += compensation;
                 }
@@ -116,12 +109,12 @@ namespace MealCompensationCalculator.Domain.Models
         }
     }
 
-    internal interface ICompensationCalculator
+    internal interface ITypeCompensationCalculator
     {
         decimal Execute(IEnumerable<Payment> payments);
     }
 
-    internal class DayCompensationCalculator : ICompensationCalculator
+    internal class DayCompensationCalculator : ITypeCompensationCalculator
     {
         private readonly MealCompensation _dayCompensation;
         private readonly MealCompensation _dayEveningCompensation;
@@ -134,7 +127,8 @@ namespace MealCompensationCalculator.Domain.Models
 
         public decimal Execute(IEnumerable<Payment> payments)
         {
-            var firstPayment = payments?.FirstOrDefault(x => IsValid(x.TransactionDateTime));
+            var firstPayment = payments?.FirstOrDefault(x => IsDateFallsToCompensationPeriod(x.TransactionDateTime));
+            
             if (firstPayment == null)
                 return 0;
 
@@ -143,22 +137,22 @@ namespace MealCompensationCalculator.Domain.Models
                 : _dayCompensation.Compensation;
         }
 
-        private bool IsValid(DateTime dateTimeTransaction)
+        private bool IsDateFallsToCompensationPeriod(DateTime dateTimeTransaction)
         {
             var date = dateTimeTransaction.Date;
 
             var d1 = new DateTime(date.Year, date.Month, date.Day, _dayCompensation.StartCompensationHour, _dayCompensation.StartCompensationMinute, 0);
-            var d2 = new DateTime(date.Year, date.Month, date.Day, _dayCompensation.EndCompensationHour, _dayCompensation.StartCompensationMinute, 0);
+            var d2 = new DateTime(date.Year, date.Month, date.Day, _dayCompensation.EndCompensationHour, _dayCompensation.EndCompensationMinute, 0);
 
             var d3 = new DateTime(date.Year, date.Month, date.Day, _dayEveningCompensation.StartCompensationHour, _dayEveningCompensation.StartCompensationMinute, 0);
-            var d4 = new DateTime(date.Year, date.Month, date.Day, _dayEveningCompensation.EndCompensationHour, _dayEveningCompensation.StartCompensationMinute, 0);
+            var d4 = new DateTime(date.Year, date.Month, date.Day, _dayEveningCompensation.EndCompensationHour, _dayEveningCompensation.EndCompensationMinute, 0);
 
             return d1 <= dateTimeTransaction && dateTimeTransaction <= d2 ||
                    d3 <= dateTimeTransaction && dateTimeTransaction <= d4;
         }
     }
 
-    internal class DayEveningCompensationCalculator : ICompensationCalculator
+    internal class DayEveningCompensationCalculator : ITypeCompensationCalculator
     {
         private readonly MealCompensation _dayCompensation;
         private readonly MealCompensation _dayEveningCompensation;
@@ -175,7 +169,7 @@ namespace MealCompensationCalculator.Domain.Models
         }
     }
 
-    internal class NotDefinedCompensationCalculator : ICompensationCalculator
+    internal class NotDefinedCompensationCalculator : ITypeCompensationCalculator
     {
         private readonly MealCompensation _dayCompensation;
         private readonly MealCompensation _dayEveningCompensation;
@@ -194,9 +188,9 @@ namespace MealCompensationCalculator.Domain.Models
 
     internal class TypeCompensationCalculatorFactory
     {
-        private readonly ICompensationCalculator _dayCompensationCalculator;
-        private readonly ICompensationCalculator _dayEveningCompensationCalculator;
-        private readonly ICompensationCalculator _notDefinedCalculator;
+        private readonly ITypeCompensationCalculator _dayCompensationCalculator;
+        private readonly ITypeCompensationCalculator _dayEveningCompensationCalculator;
+        private readonly ITypeCompensationCalculator _notDefinedCalculator;
 
         public TypeCompensationCalculatorFactory(MealCompensation dayCompensation, MealCompensation dayEveningCompensation)
         {
@@ -205,7 +199,7 @@ namespace MealCompensationCalculator.Domain.Models
             _notDefinedCalculator = new NotDefinedCompensationCalculator(dayCompensation, dayEveningCompensation);
         }
 
-        public ICompensationCalculator GetCalculator(TypeCompensation typeCompensation)
+        public ITypeCompensationCalculator GetCalculator(TypeCompensation typeCompensation)
         {
             switch (typeCompensation)
             {
