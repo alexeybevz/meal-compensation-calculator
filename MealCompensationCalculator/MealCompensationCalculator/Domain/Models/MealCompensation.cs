@@ -87,22 +87,21 @@ namespace MealCompensationCalculator.Domain.Models
 
         private TypeCompensation GetTypeCompensation(string scheduleOfWork, string shift)
         {
-            decimal shiftDecimal;
-            var shiftParseResult = Decimal.TryParse(shift, out shiftDecimal);
+            if (string.IsNullOrEmpty(scheduleOfWork))
+                return TypeCompensation.NotDefined;
 
-            if (
+            var shiftParseResult = Decimal.TryParse(shift, out var shiftDecimal);
 
-                ((
-                    (scheduleOfWork == "ПК")
-                    || (scheduleOfWork == "Я/ПК")
-                    || (scheduleOfWork == "Я/ПК/Г")
-                    || (scheduleOfWork == "Я/Г")
-                    || (scheduleOfWork == "Я/С")
-                    || (scheduleOfWork == "Я/ДС")
-                ) && (shift != ""))
-                || (shiftParseResult && (scheduleOfWork == "Я") && (shiftDecimal <= 8))
-            )
+            var daySOWs = new[] {"ПК", "Я/ПК", "Я/ПК/Г", "Я/Г", "Я/С", "Я/ДС"};
+            var dayEveningSOWs = new[] { "Я/ВЧ", "Я/Н", "РВ", "РВ/ВЧ", "НП", "РП", "Я/ПК/ВЧ", "Я/С/ВЧ" };
+
+            if (daySOWs.Contains(scheduleOfWork) && !string.IsNullOrEmpty(shift)
+                || shiftParseResult && scheduleOfWork == "Я" && shiftDecimal <= 8)
                 return TypeCompensation.Day;
+
+            if (dayEveningSOWs.Any(x => scheduleOfWork.Contains(x)) && !string.IsNullOrEmpty(shift)
+                || shiftParseResult && scheduleOfWork == "Я" && shiftDecimal > 8)
+                return TypeCompensation.DayEvening;
 
             return TypeCompensation.NotDefined;
         }
