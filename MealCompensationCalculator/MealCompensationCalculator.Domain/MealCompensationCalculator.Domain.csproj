@@ -64,19 +64,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Domain\Models\CompensationResult.cs" />
-    <Compile Include="Domain\Services\ICompensationTypeCalculator.cs" />
-    <Compile Include="Domain\Models\MealCompensation.cs" />
-    <Compile Include="Domain\Models\EmployeeFromTimeSheet.cs" />
-    <Compile Include="Domain\Models\EmployeeTimeSheet.cs" />
-    <Compile Include="Domain\Models\TimeSheetDay.cs" />
-    <Compile Include="Domain\Models\TotalPayOfEmployees.cs" />
-    <Compile Include="Domain\Queries\IGetTimeSheetOfEmployeesQuery.cs" />
-    <Compile Include="Domain\Queries\IGetTotalPayOfEmployeesQuery.cs" />
-    <Compile Include="Domain\Models\Employee.cs" />
-    <Compile Include="Domain\Models\EmployeePayments.cs" />
-    <Compile Include="Domain\Models\Payment.cs" />
-    <Compile Include="Domain\Models\TimeSheetOfEmployees.cs" />
+    <Compile Include="Models\CompensationResult.cs" />
+    <Compile Include="Services\ICompensationTypeCalculator.cs" />
+    <Compile Include="Models\MealCompensation.cs" />
+    <Compile Include="Models\EmployeeFromTimeSheet.cs" />
+    <Compile Include="Models\EmployeeTimeSheet.cs" />
+    <Compile Include="Models\TimeSheetDay.cs" />
+    <Compile Include="Models\TotalPayOfEmployees.cs" />
+    <Compile Include="Queries\IGetTimeSheetOfEmployeesQuery.cs" />
+    <Compile Include="Queries\IGetTotalPayOfEmployeesQuery.cs" />
+    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\EmployeePayments.cs" />
+    <Compile Include="Models\Payment.cs" />
+    <Compile Include="Models\TimeSheetOfEmployees.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using MealCompensationCalculator.Domain.Domain.Models;
+using MealCompensationCalculator.Domain.Models;
 
-namespace MealCompensationCalculator.Domain.Domain.Services
+namespace MealCompensationCalculator.Domain.Services
 {
     public interface ICompensationTypeCalculator
     {

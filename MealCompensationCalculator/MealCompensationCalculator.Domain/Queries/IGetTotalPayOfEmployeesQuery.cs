@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using MealCompensationCalculator.Domain.Domain.Models;
+using MealCompensationCalculator.Domain.Models;
 
-namespace MealCompensationCalculator.Domain.Domain.Queries
+namespace MealCompensationCalculator.Domain.Queries
 {
     public interface IGetTotalPayOfEmployeesQuery
     {

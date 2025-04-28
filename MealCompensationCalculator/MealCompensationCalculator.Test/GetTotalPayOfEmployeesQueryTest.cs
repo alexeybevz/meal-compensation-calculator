@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MealCompensationCalculator.Domain.Domain.Models;
-using MealCompensationCalculator.Domain.Domain.Queries;
+using MealCompensationCalculator.Domain.Models;
+using MealCompensationCalculator.Domain.Queries;
 using Moq;
 using Xunit;
 

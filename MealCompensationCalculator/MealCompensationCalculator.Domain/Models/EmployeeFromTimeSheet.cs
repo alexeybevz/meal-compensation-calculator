@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MealCompensationCalculator.Domain.Domain.Models
+namespace MealCompensationCalculator.Domain.Models
 {
     public class EmployeeFromTimeSheet
     {

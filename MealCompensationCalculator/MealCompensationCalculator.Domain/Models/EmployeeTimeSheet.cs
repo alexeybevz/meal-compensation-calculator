@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MealCompensationCalculator.Domain.Domain.Models
+namespace MealCompensationCalculator.Domain.Models
 {
     public class EmployeeTimeSheet
     {

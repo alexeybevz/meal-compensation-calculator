@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MealCompensationCalculator.Domain.Domain.Models;
-using MealCompensationCalculator.Domain.Domain.Services;
+using MealCompensationCalculator.Domain.Models;
+using MealCompensationCalculator.Domain.Services;
 
 namespace MealCompensationCalculator.BusinessLogic.Services.CompensationCalculator
 {
