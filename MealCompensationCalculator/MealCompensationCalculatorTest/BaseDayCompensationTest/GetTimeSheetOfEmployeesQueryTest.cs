@@ -6,7 +6,7 @@ using MealCompensationCalculator.Domain.Queries;
 using Moq;
 using Xunit;
 
-namespace MealCompensationCalculatorTest.BaseTest
+namespace MealCompensationCalculatorTest.BaseDayCompensationTest
 {
     public class GetTimeSheetOfEmployeesQueryTest
     {
@@ -24,7 +24,7 @@ namespace MealCompensationCalculatorTest.BaseTest
     {
         public GetTimeSheetOfEmployeesQueryMock Execute()
         {
-            var employee = new EmployeeFromTimeSheet(1344, "Бевз А. С., Программист");
+            var employee = new EmployeeFromTimeSheet(777, "Фамилия И. О., Программист");
 
             var timeSheetDays = new List<TimeSheetDay>()
             {

@@ -5,9 +5,9 @@ using MealCompensationCalculator.Domain.Models;
 using MealCompensationCalculator.Services;
 using Xunit;
 
-namespace MealCompensationCalculatorTest.BaseTest
+namespace MealCompensationCalculatorTest.BaseDayCompensationTest
 {
-    public class CompensationCalculatorTest
+    public class DayCompensationCalculatorTest
     {
         [Fact]
         public void CalcDayCompensationTest()

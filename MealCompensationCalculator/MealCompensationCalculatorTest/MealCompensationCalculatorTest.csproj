@@ -65,9 +65,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseTest\CompensationCalculatorTest.cs" />
-    <Compile Include="BaseTest\GetTimeSheetOfEmployeesQueryTest.cs" />
-    <Compile Include="BaseTest\GetTotalPayOfEmployeesQueryTest.cs" />
+    <Compile Include="BaseDayCompensationTest\DayCompensationCalculatorTest.cs" />
+    <Compile Include="BaseDayCompensationTest\GetTimeSheetOfEmployeesQueryTest.cs" />
+    <Compile Include="BaseDayCompensationTest\GetTotalPayOfEmployeesQueryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

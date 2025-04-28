@@ -7,7 +7,7 @@ using MealCompensationCalculator.Domain.Queries;
 using Moq;
 using Xunit;
 
-namespace MealCompensationCalculatorTest.BaseTest
+namespace MealCompensationCalculatorTest.BaseDayCompensationTest
 {
     public class GetTotalPayOfEmployeesQueryTest
     {
@@ -25,7 +25,7 @@ namespace MealCompensationCalculatorTest.BaseTest
     {
         public GetTotalPayOfEmployeesQueryMock Execute()
         {
-            var employee = new Employee(1344, "Бевз Алексей Сергеевич", "Отдел №14");
+            var employee = new Employee(777, "Фамилия Имя Отчество", "Отдел №1");
 
             var payments = new List<Payment>()
             {
