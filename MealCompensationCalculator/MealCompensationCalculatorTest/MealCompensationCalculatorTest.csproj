@@ -68,6 +68,7 @@
     <Compile Include="BaseDayCompensationTest\DayCompensationCalculatorTest.cs" />
     <Compile Include="BaseDayCompensationTest\GetTimeSheetOfEmployeesQueryTest.cs" />
     <Compile Include="BaseDayCompensationTest\GetTotalPayOfEmployeesQueryTest.cs" />
+    <Compile Include="BaseDayEveningCompensationTest\DayEveningCompensationCalculatorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
