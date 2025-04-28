@@ -1,14 +1,18 @@
-﻿namespace MealCompensationCalculator.Domain.Models
+﻿using System.Collections.Generic;
+
+namespace MealCompensationCalculator.Domain.Models
 {
     public class CompensationResult
     {
         public EmployeePayments EmployeePayments { get; }
-        public decimal Compensation { get; }
+        public decimal TotalCompensation { get; }
+        public IReadOnlyDictionary<int, decimal> CompensationByDays { get; }
 
-        public CompensationResult(EmployeePayments employeePayments, decimal compensation)
+        public CompensationResult(EmployeePayments employeePayments, decimal totalCompensation, IReadOnlyDictionary<int, decimal> compensationByDays)
         {
             EmployeePayments = employeePayments;
-            Compensation = compensation;
+            TotalCompensation = totalCompensation;
+            CompensationByDays = compensationByDays;
         }
     }
 }

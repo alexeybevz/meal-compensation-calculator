@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using MealCompensationCalculator.Domain.Models;
 using MealCompensationCalculator.Domain.Services;
 
@@ -26,10 +27,17 @@ namespace MealCompensationCalculator.Services
 
             foreach (var employeeTotalPayment in totalPayOfEmployees.EmployeesTotalPayments)
             {
+                var paysByDays = employeeTotalPayment
+                    .Payments
+                    .GroupBy(x => x.TransactionDateTime.Day)
+                    .ToDictionary(x => x.Key, x => x.ToList());
+
+                var compensationByDays = paysByDays.Keys.ToDictionary(x => x, x => 0m);
+
                 var timeSheetEmployees = _employeeMapper.GetEmployeeFromTimeSheets(timeSheetOfEmployees, employeeTotalPayment.Employee).ToList();
                 if (!timeSheetEmployees.Any())
                 {
-                    results.Add(new CompensationResult(employeeTotalPayment, 0));
+                    results.Add(new CompensationResult(employeeTotalPayment, 0, compensationByDays));
                     continue;
                 }
 
@@ -38,23 +46,22 @@ namespace MealCompensationCalculator.Services
                     .GroupBy(x => x.Key)
                     .ToDictionary(x => x.Key, x => x.FirstOrDefault().Value);
 
-                var paysByDays = employeeTotalPayment
-                    .Payments
-                    .GroupBy(x => x.TransactionDateTime.Day)
-                    .ToDictionary(x => x.Key, x => x.ToList());
-
                 var employeeTotalCompensation = paysByDays.Sum(paysByDay =>
                 {
                     TimeSheetDay day;
                     if (!timeSheetDaysByDay.TryGetValue(paysByDay.Key, out day))
                         return 0m;
 
-                    return _compensationTypeCalculators
+                    var compensation = _compensationTypeCalculators
                         .Where(x => x.CanApply(day.ScheduleOfWork, day.Shift))
                         .Sum(x => x.Execute(paysByDay.Value));
+
+                    compensationByDays[paysByDay.Key] = compensation;
+
+                    return compensation;
                 });
 
-                results.Add(new CompensationResult(employeeTotalPayment, employeeTotalCompensation));
+                results.Add(new CompensationResult(employeeTotalPayment, employeeTotalCompensation, compensationByDays));
             }
 
             return results;

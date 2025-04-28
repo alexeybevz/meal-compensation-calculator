@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MealCompensationCalculator.Domain.Models;
 using MealCompensationCalculator.Services;
@@ -23,7 +24,12 @@ namespace MealCompensationCalculatorTest.BaseTest
             var compensationCalculator = new CompensationCalculator(dayCompensation, dayEveningCompensation);
             var result = compensationCalculator.Execute(totalPayOfEmployees, timeSheetOfEmployees);
 
-            Assert.True(result.Sum(x => x.Compensation) == 833);
+            Assert.True(result.Sum(x => x.TotalCompensation) == 833);
+
+            var expectedDaysWithZeroCompensation = new List<int> {18, 19, 20};
+            var resultDaysWithZeroCompensation = result.SelectMany(x => x.CompensationByDays).Where(x => x.Value == 0).Select(x => x.Key).ToList();
+
+            Assert.True(!resultDaysWithZeroCompensation.Except(expectedDaysWithZeroCompensation).Any());
         }
     }
 }
