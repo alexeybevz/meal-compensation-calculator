@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DayCompensationCalculatorTest.cs" />
+    <Compile Include="EmployeeNoTimeSheetTest.cs" />
     <Compile Include="GetTimeSheetOfEmployeesQueryTest.cs" />
     <Compile Include="GetTotalPayOfEmployeesQueryTest.cs" />
     <Compile Include="DayEveningCompensationCalculatorTest.cs" />

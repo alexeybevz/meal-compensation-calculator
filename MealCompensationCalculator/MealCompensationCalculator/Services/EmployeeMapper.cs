@@ -8,8 +8,11 @@ namespace MealCompensationCalculator.Services
     {
         public IEnumerable<EmployeeTimeSheet> GetEmployeeFromTimeSheets(TimeSheetOfEmployees timeSheetOfEmployees, Employee employee)
         {
-            return timeSheetOfEmployees.EmployeesTimeSheets
-                .Where(x => x.Employee.EmployeeNumber == employee.EmployeeNumber).ToList();
+            if (timeSheetOfEmployees == null)
+                return new List<EmployeeTimeSheet>();
+
+            return timeSheetOfEmployees.EmployeesTimeSheets?
+                .Where(x => x.Employee.EmployeeNumber == employee.EmployeeNumber).ToList() ?? new List<EmployeeTimeSheet>();
         }
     }
 }
