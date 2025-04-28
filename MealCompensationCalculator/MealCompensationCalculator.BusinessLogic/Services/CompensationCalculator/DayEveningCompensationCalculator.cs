@@ -3,7 +3,7 @@ using System.Linq;
 using MealCompensationCalculator.Domain.Domain.Models;
 using MealCompensationCalculator.Domain.Domain.Services;
 
-namespace MealCompensationCalculator.Domain.Services
+namespace MealCompensationCalculator.BusinessLogic.Services.CompensationCalculator
 {
     internal class DayEveningCompensationCalculator : ICompensationTypeCalculator
     {

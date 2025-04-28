@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using MealCompensationCalculator.Domain.Domain.Models;
 using MealCompensationCalculator.Domain.Domain.Queries;
-using MealCompensationCalculator.Domain.Services;
 using Moq;
 using Xunit;
+using MealCompensationCalculator.BusinessLogic.Services.CompensationCalculator;
 
 namespace MealCompensationCalculator.Test
 {

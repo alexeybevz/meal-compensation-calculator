@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MealCompensationCalculator.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MealCompensationCalculator.Test", "MealCompensationCalculator.Test\MealCompensationCalculator.Test.csproj", "{F68830E3-2D02-46E2-A6E3-7BD5A0106C8B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MealCompensationCalculator.BusinessLogic", "MealCompensationCalculator.BusinessLogic\MealCompensationCalculator.BusinessLogic.csproj", "{CC5FBFB4-B861-42C6-B6C5-3DE09AE19582}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,10 @@ Global
 		{F68830E3-2D02-46E2-A6E3-7BD5A0106C8B}.Debug|x64.Build.0 = Debug|x64
 		{F68830E3-2D02-46E2-A6E3-7BD5A0106C8B}.Release|x64.ActiveCfg = Release|x64
 		{F68830E3-2D02-46E2-A6E3-7BD5A0106C8B}.Release|x64.Build.0 = Release|x64
+		{CC5FBFB4-B861-42C6-B6C5-3DE09AE19582}.Debug|x64.ActiveCfg = Debug|x64
+		{CC5FBFB4-B861-42C6-B6C5-3DE09AE19582}.Debug|x64.Build.0 = Debug|x64
+		{CC5FBFB4-B861-42C6-B6C5-3DE09AE19582}.Release|x64.ActiveCfg = Release|x64
+		{CC5FBFB4-B861-42C6-B6C5-3DE09AE19582}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

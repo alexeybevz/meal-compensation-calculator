@@ -80,6 +80,10 @@
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MealCompensationCalculator.BusinessLogic\MealCompensationCalculator.BusinessLogic.csproj">
+      <Project>{CC5FBFB4-B861-42C6-B6C5-3DE09AE19582}</Project>
+      <Name>MealCompensationCalculator.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MealCompensationCalculator.Domain\MealCompensationCalculator.Domain.csproj">
       <Project>{8bc79391-5c4b-414a-a850-eb7754de4299}</Project>
       <Name>MealCompensationCalculator.Domain</Name>

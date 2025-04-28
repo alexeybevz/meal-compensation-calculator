@@ -2,7 +2,7 @@
 using System.Linq;
 using MealCompensationCalculator.Domain.Domain.Models;
 
-namespace MealCompensationCalculator.Domain.Services
+namespace MealCompensationCalculator.BusinessLogic.Services.CompensationCalculator
 {
     internal class EmployeeMapper
     {
