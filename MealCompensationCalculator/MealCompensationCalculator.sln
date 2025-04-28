@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MealCompensationCalculator", "MealCompensationCalculator\MealCompensationCalculator.csproj", "{8BC79391-5C4B-414A-A850-EB7754DE4299}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MealCompensationCalculator.Domain", "MealCompensationCalculator.Domain\MealCompensationCalculator.Domain.csproj", "{8BC79391-5C4B-414A-A850-EB7754DE4299}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MealCompensationCalculatorTest", "MealCompensationCalculatorTest\MealCompensationCalculatorTest.csproj", "{F68830E3-2D02-46E2-A6E3-7BD5A0106C8B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MealCompensationCalculator.Test", "MealCompensationCalculator.Test\MealCompensationCalculator.Test.csproj", "{F68830E3-2D02-46E2-A6E3-7BD5A0106C8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
