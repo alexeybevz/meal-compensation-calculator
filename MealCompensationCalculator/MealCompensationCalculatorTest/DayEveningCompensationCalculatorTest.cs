@@ -8,7 +8,7 @@ using MealCompensationCalculator.Services;
 using Moq;
 using Xunit;
 
-namespace MealCompensationCalculatorTest.BaseDayEveningCompensationTest
+namespace MealCompensationCalculatorTest
 {
     public class DayEveningCompensationCalculatorTest
     {
