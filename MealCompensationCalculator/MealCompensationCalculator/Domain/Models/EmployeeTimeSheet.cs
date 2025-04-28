@@ -10,8 +10,14 @@ namespace MealCompensationCalculator.Domain.Models
 
         public EmployeeTimeSheet(EmployeeFromTimeSheet employee, IReadOnlyDictionary<int, TimeSheetDay> timeSheetDays)
         {
-            Employee = employee ?? throw new ArgumentException("employee is null");
-            TimeSheetDays = timeSheetDays ?? throw new ArgumentException("payments is null");
+            if (employee == null)
+                throw new ArgumentException("employee is null");
+
+            if (timeSheetDays == null)
+                throw new ArgumentException("payments is null");
+
+            Employee = employee;
+            TimeSheetDays = timeSheetDays;
         }
     }
 }

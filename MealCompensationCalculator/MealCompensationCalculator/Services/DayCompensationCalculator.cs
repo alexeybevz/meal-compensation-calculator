@@ -36,7 +36,9 @@ namespace MealCompensationCalculator.Services
                 return false;
 
             var daySOWs = new[] { "ПК", "Я/ПК", "Я/ПК/Г", "Я/Г", "Я/С", "Я/ДС" };
-            var shiftParseResult = decimal.TryParse(shift, out var shiftDecimal);
+
+            decimal shiftDecimal;
+            var shiftParseResult = decimal.TryParse(shift, out shiftDecimal);
 
             return (daySOWs.Contains(scheduleOfWork) && !string.IsNullOrEmpty(shift)
                     || shiftParseResult && scheduleOfWork == "Я" && shiftDecimal <= 8);

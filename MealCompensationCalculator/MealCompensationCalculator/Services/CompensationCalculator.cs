@@ -45,7 +45,8 @@ namespace MealCompensationCalculator.Services
 
                 var employeeTotalCompensation = paysByDays.Sum(paysByDay =>
                 {
-                    if (!timeSheetDaysByDay.TryGetValue(paysByDay.Key, out var day))
+                    TimeSheetDay day;
+                    if (!timeSheetDaysByDay.TryGetValue(paysByDay.Key, out day))
                         return 0m;
 
                     return _compensationTypeCalculators

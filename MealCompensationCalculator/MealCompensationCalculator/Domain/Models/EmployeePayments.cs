@@ -10,8 +10,14 @@ namespace MealCompensationCalculator.Domain.Models
 
         public EmployeePayments(Employee employee, IEnumerable<Payment> payments)
         {
-            Employee = employee ?? throw new ArgumentException("employee is null");
-            Payments = payments ?? throw new ArgumentException("payments is null");
+            if (employee == null)
+                throw new ArgumentException("employee is null");
+
+            if (payments == null)
+                throw new ArgumentException("payments is null");
+
+            Employee = employee;
+            Payments = payments;
         }
     }
 }
