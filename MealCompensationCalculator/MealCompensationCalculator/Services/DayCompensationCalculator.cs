@@ -18,16 +18,19 @@ namespace MealCompensationCalculator.Services
 
         public decimal Execute(IEnumerable<Payment> payments)
         {
-            var firstPayment = payments?.FirstOrDefault(x =>
-                _dayCompensation.IsDateFallsToCompensationPeriod(x.TransactionDateTime) ||
-                _dayEveningCompensation.IsDateFallsToCompensationPeriod(x.TransactionDateTime));
-            
+            var firstPayment = payments?.FirstOrDefault();
             if (firstPayment == null)
                 return 0;
 
-            return firstPayment.Cost <= _dayCompensation.Compensation
-                ? firstPayment.Cost
-                : _dayCompensation.Compensation;
+            if (_dayCompensation.IsDateFallsToCompensationPeriod(firstPayment.TransactionDateTime) ||
+                _dayEveningCompensation.IsDateFallsToCompensationPeriod(firstPayment.TransactionDateTime))
+            {
+                return firstPayment.Cost <= _dayCompensation.Compensation
+                    ? firstPayment.Cost
+                    : _dayCompensation.Compensation;
+            }
+
+            return 0;
         }
 
         public bool CanApply(string scheduleOfWork, string shift)
