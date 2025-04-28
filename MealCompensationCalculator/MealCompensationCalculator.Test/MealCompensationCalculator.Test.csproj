@@ -70,6 +70,7 @@
     <Compile Include="GetTimeSheetOfEmployeesQueryTest.cs" />
     <Compile Include="GetTotalPayOfEmployeesQueryTest.cs" />
     <Compile Include="DayEveningCompensationCalculatorTest.cs" />
+    <Compile Include="GetTotalPayOfEmployeesFromExcelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DayCompensationCalculatorForEmployeeWithTwoProfessionTest.cs" />
   </ItemGroup>
