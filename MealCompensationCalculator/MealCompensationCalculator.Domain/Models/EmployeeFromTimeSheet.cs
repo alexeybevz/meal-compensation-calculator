@@ -36,8 +36,8 @@ namespace MealCompensationCalculator.Domain.Models
             FullNameAndJobTitle = fullNameAndJobTitle;
 
             var split = fullNameAndJobTitle.Split(',');
-            FullName = split[0];
-            JobTitle = split[1];
+            FullName = split[0].Trim();
+            JobTitle = split[1].Trim();
         }
     }
 }
