@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
@@ -9,15 +10,15 @@ namespace MealCompensationCalculator.BusinessLogic.Commands
 {
     public class CreateEmployeeSummaryReportToExcelCommand : ICreateEmployeeSummaryReportCommand
     {
-        public async Task Execute(string pathToXlsxFile, IEnumerable<CompensationResult> compensationResults)
+        public async Task Execute(string pathToXlsxFile, DateTime startPeriod, DateTime endPeriod, IEnumerable<CompensationResult> compensationResults)
         {
             await Task.Run(() =>
             {
-                CreateReport(pathToXlsxFile, compensationResults);
+                CreateReport(pathToXlsxFile, startPeriod, endPeriod, compensationResults);
             });
         }
 
-        private void CreateReport(string pathToXlsxFile, IEnumerable<CompensationResult> compensationResults)
+        private void CreateReport(string pathToXlsxFile, DateTime startPeriod, DateTime endPeriod, IEnumerable<CompensationResult> compensationResults)
         {
             using (XLWorkbook workbook = new XLWorkbook())
             {
@@ -26,13 +27,13 @@ namespace MealCompensationCalculator.BusinessLogic.Commands
 
                 var ws = workbook.Worksheets.Add("Сводный отчет");
 
-                CreateWs(ws, compensationResults);
+                CreateWs(ws, startPeriod, endPeriod, compensationResults);
 
                 workbook.SaveAs(pathToXlsxFile);
             }
         }
 
-        private void CreateWs(IXLWorksheet ws, IEnumerable<CompensationResult> compensationResults)
+        private void CreateWs(IXLWorksheet ws, DateTime startPeriod, DateTime endPeriod, IEnumerable<CompensationResult> compensationResults)
         {
             var columnNames = new[]
             {
@@ -47,9 +48,21 @@ namespace MealCompensationCalculator.BusinessLogic.Commands
                 "Дополнительная дотация"
             };
 
+            CreateTitle(ws, startPeriod, endPeriod, columnNames.Length);
             CreateHeader(ws, columnNames);
             CreateBody(ws, compensationResults, columnNames.Length);
             PostFormatSheet(ws);
+        }
+
+        private void CreateTitle(IXLWorksheet ws, DateTime startPeriod, DateTime endPeriod, int countColumns)
+        {
+            var range = ws.Range(ws.Cell(1, 1), ws.Cell(1, countColumns));
+            range.Merge();
+            range.Style.Font.Bold = true;
+            range.Style.Font.FontSize = 12;
+            range.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+            ws.Cell(1, 1).SetValue($"ИП Валиев Р.И. - сводный отчет ({startPeriod:dd.MM.yyyy} - {endPeriod:dd.MM.yyyy}), подготовлен: {DateTime.Now:dd.MM.yyyy HH:mm:ss}, денежная единица - р.");
         }
 
         private static void CreateBody(IXLWorksheet ws, IEnumerable<CompensationResult> compensationResults, int countColumns)
@@ -144,6 +157,10 @@ namespace MealCompensationCalculator.BusinessLogic.Commands
 
             ws.Columns().AdjustToContents();
             ws.SheetView.FreezeRows(3);
+
+            ws.Column(5).Style.NumberFormat.SetFormat("#,##0.00");
+            ws.Column(6).Style.NumberFormat.SetFormat("#,##0.00");
+            ws.Column(8).Style.NumberFormat.SetFormat("#,##0.00");
         }
     }
 }
