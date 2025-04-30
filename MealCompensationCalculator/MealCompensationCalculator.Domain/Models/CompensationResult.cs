@@ -6,9 +6,9 @@ namespace MealCompensationCalculator.Domain.Models
     {
         public EmployeePayments EmployeePayments { get; }
         public decimal TotalCompensation { get; }
-        public IReadOnlyDictionary<int, decimal> CompensationByDays { get; }
+        public IReadOnlyDictionary<int, CompensationTimeSheetDay> CompensationByDays { get; }
 
-        public CompensationResult(EmployeePayments employeePayments, decimal totalCompensation, IReadOnlyDictionary<int, decimal> compensationByDays)
+        public CompensationResult(EmployeePayments employeePayments, decimal totalCompensation, IReadOnlyDictionary<int, CompensationTimeSheetDay> compensationByDays)
         {
             EmployeePayments = employeePayments;
             TotalCompensation = totalCompensation;

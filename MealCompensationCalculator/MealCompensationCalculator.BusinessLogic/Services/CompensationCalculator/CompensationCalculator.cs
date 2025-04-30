@@ -31,7 +31,7 @@ namespace MealCompensationCalculator.BusinessLogic.Services.CompensationCalculat
                     .GroupBy(x => x.TransactionDateTime.Day)
                     .ToDictionary(x => x.Key, x => x.ToList());
 
-                var compensationByDays = paysByDays.Keys.ToDictionary(x => x, x => 0m);
+                var compensationByDays = paysByDays.Keys.ToDictionary(x => x, x => new CompensationTimeSheetDay(0m, string.Empty, string.Empty));
 
                 var timeSheetEmployees = _employeeMapper.GetEmployeeFromTimeSheets(timeSheetOfEmployees, employeeTotalPayment.Employee).ToList();
                 if (!timeSheetEmployees.Any())
@@ -55,7 +55,7 @@ namespace MealCompensationCalculator.BusinessLogic.Services.CompensationCalculat
                         .Where(x => x.CanApply(day.ScheduleOfWork, day.Shift))
                         .Sum(x => x.Execute(paysByDay.Value));
 
-                    compensationByDays[paysByDay.Key] = compensation;
+                    compensationByDays[paysByDay.Key] = new CompensationTimeSheetDay(compensation, day.ScheduleOfWork, day.Shift);
 
                     return compensation;
                 });

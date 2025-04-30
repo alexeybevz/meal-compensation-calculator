@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CreateEmployeePaymentsMistakesReportToExcelCommand.cs" />
     <Compile Include="Commands\CreateEmployeeSummaryReportToExcelCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetTimeSheetOfEmployeesFromExcel.cs" />

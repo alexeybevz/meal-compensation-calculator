@@ -30,7 +30,7 @@ namespace MealCompensationCalculator.Test
             Assert.True(result.Sum(x => x.TotalCompensation) == 1381);
 
             var expectedDaysWithZeroCompensation = new List<int> { 23, 27 };
-            var resultDaysWithZeroCompensation = result.SelectMany(x => x.CompensationByDays).Where(x => x.Value == 0).Select(x => x.Key).ToList();
+            var resultDaysWithZeroCompensation = result.SelectMany(x => x.CompensationByDays).Where(x => x.Value.Compensation == 0).Select(x => x.Key).ToList();
 
             Assert.True(!resultDaysWithZeroCompensation.Except(expectedDaysWithZeroCompensation).Any() && resultDaysWithZeroCompensation.Count == 2);
         }
