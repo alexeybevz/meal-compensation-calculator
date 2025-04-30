@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MealCompensationCalculator.Domain.Models;
@@ -31,7 +32,7 @@ namespace MealCompensationCalculator.Test
                 };
 
                 var employeeTimeSheet = new List<EmployeeTimeSheet>() { new EmployeeTimeSheet(employee, timeSheetDays.ToDictionary(x => x.Day)) };
-                var timeSheetOfEmployees = new TimeSheetOfEmployees(employeeTimeSheet);
+                var timeSheetOfEmployees = new TimeSheetOfEmployees(DateTime.Parse("01.10.2017"), DateTime.Parse("31.10.2017"), employeeTimeSheet);
 
                 Setup(x => x.Execute())
                     .Returns(Task.FromResult(timeSheetOfEmployees));

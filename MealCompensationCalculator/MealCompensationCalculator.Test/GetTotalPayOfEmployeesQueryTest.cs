@@ -32,7 +32,7 @@ namespace MealCompensationCalculator.Test
                 };
 
                 var employeePayments = new EmployeePayments(employee, payments);
-                var totalPayOfEmployees = new TotalPayOfEmployees(new List<EmployeePayments>() { employeePayments });
+                var totalPayOfEmployees = new TotalPayOfEmployees(DateTime.Parse("01.10.2017"), DateTime.Parse("31.10.2017"), new List<EmployeePayments>() { employeePayments });
 
                 Setup(x => x.Execute())
                     .Returns(Task.FromResult(totalPayOfEmployees));

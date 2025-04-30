@@ -21,20 +21,33 @@ namespace MealCompensationCalculator.BusinessLogic.Queries
             TotalPayOfEmployees totalPayOfEmployees = null;
             await Task.Run(() =>
             {
-                var employeePayments = ParseExcelFile();
-                totalPayOfEmployees = new TotalPayOfEmployees(employeePayments);
+                totalPayOfEmployees = ParseExcelFile();
             });
 
             return totalPayOfEmployees;
         }
 
-        private IEnumerable<EmployeePayments> ParseExcelFile()
+        private TotalPayOfEmployees ParseExcelFile()
         {
+            var startPeriod = DateTime.MinValue;
+            var endPeriod = DateTime.MinValue;
             var employeePayments = new List<EmployeePayments>();
 
             using (var workbook = new XLWorkbook(_pathToFile))
             {
                 var ws = workbook.Worksheet(1);
+
+                var titleReport = ws.Cell(1, 1).GetString();
+                var startIndex = titleReport.IndexOf("(", StringComparison.Ordinal);
+                var endIndex = titleReport.IndexOf(")", StringComparison.Ordinal);
+
+                if (startIndex > -1 && endIndex > -1)
+                {
+                    var periodString = titleReport.Substring(startIndex + 1, endIndex - 1 - startIndex);
+                    var periodStringSplit = periodString.Split('-');
+                    startPeriod = DateTime.Parse(periodStringSplit[0]);
+                    endPeriod = DateTime.Parse(periodStringSplit[1]);
+                }
 
                 // Не смотрим строку с итогами с помощью -1
                 var maxRowNumber = ws.LastRowUsed().RowNumber() - 1;
@@ -85,7 +98,7 @@ namespace MealCompensationCalculator.BusinessLogic.Queries
                 employeePayments.Add(new EmployeePayments(employee, new List<Payment>(payments)));
             }
 
-            return employeePayments;
+            return new TotalPayOfEmployees(startPeriod, endPeriod, employeePayments);
         }
     }
 }

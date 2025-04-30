@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
@@ -21,20 +22,24 @@ namespace MealCompensationCalculator.BusinessLogic.Queries
             TimeSheetOfEmployees timeSheetOfEmployees = null;
             await Task.Run(() =>
             {
-                var employeeTimeSheets = ParseExcelFile();
-                timeSheetOfEmployees = new TimeSheetOfEmployees(employeeTimeSheets);
+                timeSheetOfEmployees = ParseExcelFile();
             });
 
             return timeSheetOfEmployees;
         }
 
-        private IEnumerable<EmployeeTimeSheet> ParseExcelFile()
+        private TimeSheetOfEmployees ParseExcelFile()
         {
+            var startPeriod = DateTime.MinValue;
+            var endPeriod = DateTime.MinValue;
             var employeeTimeSheets = new List<EmployeeTimeSheet>();
 
             using (var workbook = new XLWorkbook(_pathToFile))
             {
                 var ws = workbook.Worksheet(1);
+
+                startPeriod = DateTime.Parse(ws.Cell(12, 51).GetString());
+                endPeriod = DateTime.Parse(ws.Cell(12, 55).GetString());
 
                 // Не смотрим строку с подписями с помощью -6
                 var maxRowNumber = ws.LastRowUsed().RowNumber() - 6;
@@ -90,7 +95,7 @@ namespace MealCompensationCalculator.BusinessLogic.Queries
                 }
             }
 
-            return employeeTimeSheets;
+            return new TimeSheetOfEmployees(startPeriod, endPeriod, employeeTimeSheets);
         }
 
         private static int MoveColToNextDay(int col)
