@@ -10,6 +10,13 @@ namespace MealCompensationCalculator.BusinessLogic.Commands
 {
     public class CreateEmployeeSummaryReportToExcelCommand : ICreateEmployeeSummaryReportCommand
     {
+        private readonly MealCompensation _dayEveningCompensation;
+
+        public CreateEmployeeSummaryReportToExcelCommand(MealCompensation dayEveningCompensation)
+        {
+            _dayEveningCompensation = dayEveningCompensation;
+        }
+
         public async Task Execute(string pathToXlsxFile, DateTime startPeriod, DateTime endPeriod, IEnumerable<CompensationResult> compensationResults)
         {
             await Task.Run(() =>
@@ -65,7 +72,7 @@ namespace MealCompensationCalculator.BusinessLogic.Commands
             ws.Cell(1, 1).SetValue($"ИП Валиев Р.И. - сводный отчет ({startPeriod:dd.MM.yyyy} - {endPeriod:dd.MM.yyyy}), подготовлен: {DateTime.Now:dd.MM.yyyy HH:mm:ss}, денежная единица - р.");
         }
 
-        private static void CreateBody(IXLWorksheet ws, IEnumerable<CompensationResult> compensationResults, int countColumns)
+        private void CreateBody(IXLWorksheet ws, IEnumerable<CompensationResult> compensationResults, int countColumns)
         {
             var seq = 1;
             var row = 4;
@@ -94,6 +101,12 @@ namespace MealCompensationCalculator.BusinessLogic.Commands
                 var costCash = compensationResult.EmployeePayments.Payments.Sum(x => x.CostCash);
                 totalCostCash += costCash;
                 ws.Cell(row, col).Value = costCash;
+
+                var isExistsAtLeastOneEveningVisit = compensationResult.EmployeePayments.Payments.Any(x =>
+                    _dayEveningCompensation.IsDateFallsToCompensationPeriod(x.TransactionDateTime));
+
+                if (isExistsAtLeastOneEveningVisit)
+                    ws.Range(ws.Cell(row, 1), ws.Cell(row, countColumns)).Style.Fill.BackgroundColor = XLColor.LightBlue;
 
                 row++;
             }

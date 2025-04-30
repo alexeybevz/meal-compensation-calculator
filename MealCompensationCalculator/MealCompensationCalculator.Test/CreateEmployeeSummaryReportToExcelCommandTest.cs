@@ -27,7 +27,7 @@ namespace MealCompensationCalculator.Test
             var compensationResults = compensationCalculator.Execute(totalPayOfEmployees, timeSheetOfEmployees);
 
             path = @"C:\Users\abevz\Desktop\результат.xlsx";
-            var service = new CreateEmployeeSummaryReportToExcelCommand();
+            var service = new CreateEmployeeSummaryReportToExcelCommand(dayEveningCompensation);
             await service.Execute(path, totalPayOfEmployees.StartPeriod, totalPayOfEmployees.EndPeriod, compensationResults);
         }
     }
