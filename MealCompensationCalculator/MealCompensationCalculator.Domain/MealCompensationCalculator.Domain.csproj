@@ -64,6 +64,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Commands\ICreateEmployeeSummaryReportCommand.cs" />
     <Compile Include="Models\CompensationResult.cs" />
     <Compile Include="Services\ICompensationTypeCalculator.cs" />
     <Compile Include="Models\MealCompensation.cs" />
