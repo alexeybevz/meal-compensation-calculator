@@ -9,6 +9,15 @@ namespace MealCompensationCalculator.BusinessLogic.Commands
 {
     public class CreateEmployeePaymentsMistakesReportToExcelCommand : ICreateEmployeePaymentsMistakesReportCommand
     {
+        private readonly MealCompensation _dayCompensation;
+        private readonly MealCompensation _dayEveningCompensation;
+
+        public CreateEmployeePaymentsMistakesReportToExcelCommand(MealCompensation dayCompensation, MealCompensation dayEveningCompensation)
+        {
+            _dayCompensation = dayCompensation;
+            _dayEveningCompensation = dayEveningCompensation;
+        }
+
         public async Task Execute(string pathToXlsxFile, IEnumerable<CompensationResult> compensationResults)
         {
             await Task.Run(() =>
@@ -102,7 +111,12 @@ namespace MealCompensationCalculator.BusinessLogic.Commands
                 foreach (var pay in compensationResult.EmployeePayments.Payments)
                 {
                     var compensationTimeSheetDay = compensationResult.CompensationByDays[pay.TransactionDateTime.Day];
-                    if (compensationTimeSheetDay.Compensation > 0)
+
+                    var isDateFallsToCompensationPeriod =
+                        _dayCompensation.IsDateFallsToCompensationPeriod(pay.TransactionDateTime) ||
+                        _dayEveningCompensation.IsDateFallsToCompensationPeriod(pay.TransactionDateTime);
+
+                    if (compensationTimeSheetDay.Compensation > 0 && isDateFallsToCompensationPeriod)
                         continue;
 
                     var col = 1;
