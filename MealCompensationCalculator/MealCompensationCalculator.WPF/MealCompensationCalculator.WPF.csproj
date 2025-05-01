@@ -56,7 +56,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\AsyncCommandBase.cs" />
+    <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\LoadConfigCommand.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Stores\ConfigStore.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MealCompensationCalculatorViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
@@ -106,6 +110,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\MealCompensationCalculator.BusinessLogic\MealCompensationCalculator.BusinessLogic.csproj">
+      <Project>{cc5fbfb4-b861-42c6-b6c5-3de09ae19582}</Project>
+      <Name>MealCompensationCalculator.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MealCompensationCalculator.Domain\MealCompensationCalculator.Domain.csproj">
+      <Project>{8bc79391-5c4b-414a-a850-eb7754de4299}</Project>
+      <Name>MealCompensationCalculator.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
