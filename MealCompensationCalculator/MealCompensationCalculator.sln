@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32228.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MealCompensationCalculator.Domain", "MealCompensationCalculator.Domain\MealCompensationCalculator.Domain.csproj", "{8BC79391-5C4B-414A-A850-EB7754DE4299}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MealCompensationCalculator.Test", "MealCompensationCalculator.Test\MealCompensationCalculator.Test.csproj", "{F68830E3-2D02-46E2-A6E3-7BD5A0106C8B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MealCompensationCalculator.BusinessLogic", "MealCompensationCalculator.BusinessLogic\MealCompensationCalculator.BusinessLogic.csproj", "{CC5FBFB4-B861-42C6-B6C5-3DE09AE19582}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MealCompensationCalculator.WPF", "MealCompensationCalculator.WPF\MealCompensationCalculator.WPF.csproj", "{DBCAEBD1-C1FF-4993-BF5F-D08F29D40193}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,8 +29,15 @@ Global
 		{CC5FBFB4-B861-42C6-B6C5-3DE09AE19582}.Debug|x64.Build.0 = Debug|x64
 		{CC5FBFB4-B861-42C6-B6C5-3DE09AE19582}.Release|x64.ActiveCfg = Release|x64
 		{CC5FBFB4-B861-42C6-B6C5-3DE09AE19582}.Release|x64.Build.0 = Release|x64
+		{DBCAEBD1-C1FF-4993-BF5F-D08F29D40193}.Debug|x64.ActiveCfg = Debug|x64
+		{DBCAEBD1-C1FF-4993-BF5F-D08F29D40193}.Debug|x64.Build.0 = Debug|x64
+		{DBCAEBD1-C1FF-4993-BF5F-D08F29D40193}.Release|x64.ActiveCfg = Release|x64
+		{DBCAEBD1-C1FF-4993-BF5F-D08F29D40193}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B46ECF32-7B1F-4A79-B018-C147DF810E11}
 	EndGlobalSection
 EndGlobal
