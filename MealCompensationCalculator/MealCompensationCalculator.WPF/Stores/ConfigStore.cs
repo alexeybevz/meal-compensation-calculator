@@ -29,9 +29,9 @@ namespace MealCompensationCalculator.WPF.Stores
             ConfigLoaded?.Invoke();
         }
 
-        public async Task Save()
+        public async Task Save(Config config)
         {
-            await _saveConfigCommand.Execute(_config);
+            await _saveConfigCommand.Execute(config);
             ConfigSaved?.Invoke();
         }
     }

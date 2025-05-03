@@ -59,14 +59,38 @@
     <Compile Include="Commands\AsyncCommandBase.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\LoadConfigCommand.cs" />
+    <Compile Include="Components\ConfigView.xaml.cs">
+      <DependentUpon>ConfigView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\MealCompensationView.xaml.cs">
+      <DependentUpon>MealCompensationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\ReportLocation.xaml.cs">
+      <DependentUpon>ReportLocation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Stores\ConfigStore.cs" />
+    <Compile Include="ViewModels\ConfigViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MealCompensationCalculatorViewModel.cs" />
+    <Compile Include="ViewModels\MealCompensationViewModel.cs" />
+    <Compile Include="ViewModels\ReportLocationViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\MealCompensationCalculatorView.xaml.cs">
       <DependentUpon>MealCompensationCalculatorView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Components\ConfigView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\MealCompensationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\ReportLocation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -120,5 +144,6 @@
       <Name>MealCompensationCalculator.Domain</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

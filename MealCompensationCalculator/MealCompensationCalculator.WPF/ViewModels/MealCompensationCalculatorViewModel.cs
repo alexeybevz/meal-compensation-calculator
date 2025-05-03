@@ -37,10 +37,13 @@ namespace MealCompensationCalculator.WPF.ViewModels
 
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
+        public ConfigViewModel ConfigViewModel { get; }
+
         public ICommand LoadConfigCommand;
 
         private MealCompensationCalculatorViewModel(ConfigStore configStore)
         {
+            ConfigViewModel = new ConfigViewModel();
             LoadConfigCommand = new LoadConfigCommand(this, configStore);
         }
 
