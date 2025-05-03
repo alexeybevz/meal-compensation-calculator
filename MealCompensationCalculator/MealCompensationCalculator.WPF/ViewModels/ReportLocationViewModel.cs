@@ -1,4 +1,7 @@
-﻿namespace MealCompensationCalculator.WPF.ViewModels
+﻿using System.Windows.Input;
+using MealCompensationCalculator.WPF.Commands;
+
+namespace MealCompensationCalculator.WPF.ViewModels
 {
     public class ReportLocationViewModel : ViewModelBase
     {
@@ -14,6 +17,13 @@
                 _pathToReport = value;
                 OnPropertyChanged(nameof(PathToReport));
             }
+        }
+        
+        public ICommand ChoiceReportLocationCommand { get; }
+
+        public ReportLocationViewModel()
+        {
+            ChoiceReportLocationCommand = new ChoiceReportLocationCommand(this);
         }
     }
 }

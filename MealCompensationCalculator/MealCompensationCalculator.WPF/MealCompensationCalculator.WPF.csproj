@@ -38,6 +38,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -58,6 +59,7 @@
     </ApplicationDefinition>
     <Compile Include="Behaviors\WindowClosingBehavior.cs" />
     <Compile Include="Commands\AsyncCommandBase.cs" />
+    <Compile Include="Commands\ChoiceReportLocationCommand.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\ExecuteMealCompensationCalculatorCommand.cs" />
     <Compile Include="Commands\LoadConfigCommand.cs" />

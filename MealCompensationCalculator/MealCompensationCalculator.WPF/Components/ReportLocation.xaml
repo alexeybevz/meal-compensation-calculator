@@ -27,11 +27,13 @@
                        Text="Расположение создаваемого отчета" />
             <TextBox Grid.Column="1"
                      Text="{Binding PathToReport}"
-                     Margin="10 0 10 0" />
+                     Margin="10 0 10 0"
+                     IsReadOnly="True" />
             <Button Grid.Column="2"
                     Content="..."
                     Width="Auto"
-                    Style="{StaticResource SecondaryButton}"/>
+                    Style="{StaticResource SecondaryButton}"
+                    Command="{Binding ChoiceReportLocationCommand}"/>
         </Grid>
     </Border>
 </UserControl>
