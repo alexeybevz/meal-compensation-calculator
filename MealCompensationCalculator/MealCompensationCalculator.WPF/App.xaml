@@ -119,5 +119,18 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground"
+                    Value="Black" />
+            <Setter Property="BorderBrush"
+                    Value="DarkGray" />
+            <Setter Property="BorderThickness"
+                    Value="1" />
+            <Setter Property="Padding"
+                    Value="5" />
+            <Setter Property="FontSize"
+                    Value="14" />
+        </Style>
     </Application.Resources>
 </Application>
