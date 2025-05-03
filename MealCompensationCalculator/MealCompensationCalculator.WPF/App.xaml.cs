@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using MealCompensationCalculator.BusinessLogic.Commands;
 using MealCompensationCalculator.BusinessLogic.Queries;
 using MealCompensationCalculator.WPF.Stores;
 using MealCompensationCalculator.WPF.ViewModels;
@@ -12,7 +13,7 @@ namespace MealCompensationCalculator.WPF
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            MainWindow = new MainWindow() { DataContext = new MainViewModel(new ConfigStore(new GetConfigQuery())) };
+            MainWindow = new MainWindow() { DataContext = new MainViewModel(new ConfigStore(new GetConfigQuery(), new SaveConfigCommand())) };
             MainWindow.Show();
         }
     }

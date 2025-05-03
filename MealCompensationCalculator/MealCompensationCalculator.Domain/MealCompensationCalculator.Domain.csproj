@@ -66,6 +66,7 @@
     </Compile>
     <Compile Include="Commands\ICreateEmployeePaymentsMistakesReportCommand.cs" />
     <Compile Include="Commands\ICreateEmployeeSummaryReportCommand.cs" />
+    <Compile Include="Commands\ISaveConfigCommand.cs" />
     <Compile Include="Models\CompensationResult.cs" />
     <Compile Include="Models\CompensationTimeSheetDay.cs" />
     <Compile Include="Models\Config.cs" />
