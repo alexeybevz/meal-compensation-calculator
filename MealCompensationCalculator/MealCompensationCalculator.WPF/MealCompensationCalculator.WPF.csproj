@@ -56,9 +56,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behaviors\WindowClosingBehavior.cs" />
     <Compile Include="Commands\AsyncCommandBase.cs" />
     <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\ExecuteMealCompensationCalculatorCommand.cs" />
     <Compile Include="Commands\LoadConfigCommand.cs" />
+    <Compile Include="Commands\SaveConfigCommand.cs" />
     <Compile Include="Components\ConfigView.xaml.cs">
       <DependentUpon>ConfigView.xaml</DependentUpon>
     </Compile>

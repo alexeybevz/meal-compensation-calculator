@@ -63,15 +63,14 @@
     <Compile Include="Services\CompensationCalculator\EmployeeMapper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\MealCompensationCalculator.Domain\MealCompensationCalculator.Domain.csproj">
       <Project>{8bc79391-5c4b-414a-a850-eb7754de4299}</Project>
       <Name>MealCompensationCalculator.Domain</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

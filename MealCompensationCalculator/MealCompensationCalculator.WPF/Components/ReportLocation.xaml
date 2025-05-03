@@ -26,7 +26,7 @@
                        VerticalAlignment="Center"
                        Text="Расположение создаваемого отчета" />
             <TextBox Grid.Column="1"
-                     Text="Расположение создаваемого отчета"
+                     Text="{Binding PathToReport}"
                      Margin="10 0 10 0" />
             <Button Grid.Column="2"
                     Content="..."

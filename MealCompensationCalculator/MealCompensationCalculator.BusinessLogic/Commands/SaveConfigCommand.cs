@@ -12,16 +12,22 @@ namespace MealCompensationCalculator.BusinessLogic.Commands
         {
             await Task.Run(() =>
             {
-                ConfigurationManager.AppSettings["StartTimeDayCompensation"] = config.DayCompensation.StartTimeCompensation.ToString();
-                ConfigurationManager.AppSettings["EndTimeDayCompensation"] = config.DayCompensation.EndTimeCompensation.ToString();
+                var configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                var settings = configuration.AppSettings.Settings;
 
-                ConfigurationManager.AppSettings["StartTimeDayEveningCompensation"] = config.DayEveningCompensation.StartTimeCompensation.ToString();
-                ConfigurationManager.AppSettings["EndTimeDayEveningCompensation"] = config.DayEveningCompensation.EndTimeCompensation.ToString();
+                settings["StartTimeDayCompensation"].Value = config.DayCompensation.StartTimeCompensation.ToString();
+                settings["EndTimeDayCompensation"].Value = config.DayCompensation.EndTimeCompensation.ToString();
 
-                ConfigurationManager.AppSettings["DayCompensationValue"] = config.DayCompensation.Compensation.ToString(CultureInfo.InvariantCulture);
-                ConfigurationManager.AppSettings["DayEveningCompensationValue"] = config.DayEveningCompensation.Compensation.ToString(CultureInfo.InvariantCulture);
+                settings["StartTimeDayEveningCompensation"].Value = config.DayEveningCompensation.StartTimeCompensation.ToString();
+                settings["EndTimeDayEveningCompensation"].Value = config.DayEveningCompensation.EndTimeCompensation.ToString();
 
-                ConfigurationManager.AppSettings["PathToSaveReports"] = config.PathToSaveReports;
+                settings["DayCompensationValue"].Value = config.DayCompensation.Compensation.ToString(CultureInfo.InvariantCulture);
+                settings["DayEveningCompensationValue"].Value = config.DayEveningCompensation.Compensation.ToString(CultureInfo.InvariantCulture);
+
+                settings["PathToSaveReports"].Value = config.PathToSaveReports;
+
+                configuration.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection("appSettings");
             });
         }
     }

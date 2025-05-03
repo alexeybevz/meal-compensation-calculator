@@ -5,11 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MealCompensationCalculator.WPF"
         xmlns:views="clr-namespace:MealCompensationCalculator.WPF.Views"
+        xmlns:behaviors="clr-namespace:MealCompensationCalculator.WPF.Behaviors"
         mc:Ignorable="d"
         Title="Расчет компенсации питания сотрудников"
         WindowStartupLocation="CenterScreen"
         Height="450"
-        Width="800">
+        Width="800"
+        behaviors:WindowClosingBehavior.Closed="{Binding MyClosedCommand}">
     <Grid>
         <views:MealCompensationCalculatorView DataContext="{Binding MealCompensationCalculatorViewModel}" />
     </Grid>

@@ -8,6 +8,7 @@
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800">
+
     <Grid>
         <StackPanel VerticalAlignment="Center">
             <StackPanel.Style>
@@ -89,7 +90,8 @@
                 <Button Style="{StaticResource PrimaryButton}"
                         Grid.Row="1"
                         Margin="10"
-                        Content="Рассчитать компенсацию" />
+                        Content="Рассчитать компенсацию"
+                        Command="{Binding ExecuteMealCompensationCalculatorCommand}"/>
             </Grid>
         </Grid>
     </Grid>

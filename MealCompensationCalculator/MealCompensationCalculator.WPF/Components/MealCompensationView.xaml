@@ -27,7 +27,7 @@
             <Grid Row="0"
                   ColumnSpan="2"
                   Margin="0 10">
-                <TextBlock Text="Дневная компенсация"
+                <TextBlock Text="{Binding CompensationName}"
                            HorizontalAlignment="Center"
                            FontSize="16"
                            FontWeight="Bold" />
@@ -41,7 +41,8 @@
             <Grid Row="1"
                   Column="1"
                   Margin="0 10">
-                <TextBox Width="70" />
+                <TextBox Width="70"
+                         Text="{Binding CompensationAmount}" />
             </Grid>
 
             <Grid Row="2"
@@ -52,7 +53,8 @@
             <Grid Row="2"
                   Column="1"
                   Margin="0 10">
-                <TextBox Width="70" />
+                <TextBox Width="70"
+                         Text="{Binding StartTimeCompensation}"/>
             </Grid>
 
             <Grid Row="3"
@@ -63,7 +65,8 @@
             <Grid Row="3"
                   Column="1"
                   Margin="0 10">
-                <TextBox Width="70" />
+                <TextBox Width="70"
+                         Text="{Binding EndTimeCompensation}" />
             </Grid>
         </Grid>
     </Border>

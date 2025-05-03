@@ -1,4 +1,6 @@
-﻿using MealCompensationCalculator.WPF.Stores;
+﻿using System.Windows.Input;
+using MealCompensationCalculator.WPF.Commands;
+using MealCompensationCalculator.WPF.Stores;
 
 namespace MealCompensationCalculator.WPF.ViewModels
 {
@@ -6,9 +8,12 @@ namespace MealCompensationCalculator.WPF.ViewModels
     {
         public MealCompensationCalculatorViewModel MealCompensationCalculatorViewModel { get; }
 
+        public ICommand MyClosedCommand { get; }
+
         public MainViewModel(ConfigStore configStore)
         {
             MealCompensationCalculatorViewModel = MealCompensationCalculatorViewModel.LoadViewModel(configStore);
+            MyClosedCommand = new SaveConfigCommand(MealCompensationCalculatorViewModel.ConfigViewModel, configStore);
         }
     }
 }
