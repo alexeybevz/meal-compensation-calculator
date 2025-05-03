@@ -7,6 +7,77 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock Text="Форма MealCompensationCalculator" />
+        <StackPanel VerticalAlignment="Center">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Visibility"
+                            Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLoading}"
+                                     Value="True">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+
+            <TextBlock Text="Загрузка параметров пользователя ..."
+                       TextAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="0 10 0 0" />
+        </StackPanel>
+
+        <Grid>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility"
+                            Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLoading}"
+                                     Value="False">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility"
+                                Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding HasErrorMessage}"
+                                         Value="True">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorMessage}" />
+            </Grid>
+
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility"
+                                Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding HasErrorMessage}"
+                                         Value="False">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <TextBlock Text="Форма MealCompensationCalculator" />
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>

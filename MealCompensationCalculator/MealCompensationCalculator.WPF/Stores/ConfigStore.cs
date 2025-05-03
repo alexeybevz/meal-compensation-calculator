@@ -1,26 +1,28 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Windows;
 using MealCompensationCalculator.Domain.Models;
+using MealCompensationCalculator.Domain.Queries;
 
 namespace MealCompensationCalculator.WPF.Stores
 {
     public class ConfigStore
     {
-        private MealCompensation _dayCompensation;
-        private MealCompensation _dayEveningCompensation;
-        private string _pathToSaveReports;
+        private readonly IGetConfigQuery _getConfigQuery;
+        private Config _config;
 
-        public MealCompensation DayCompensation => _dayCompensation;
-        public MealCompensation DayEveningCompensation => _dayEveningCompensation;
-        public string PathToSaveReports => _pathToSaveReports;
+        public Config Config => _config;
 
         public event Action ConfigLoaded;
 
+        public ConfigStore(IGetConfigQuery getConfigQuery)
+        {
+            _getConfigQuery = getConfigQuery;
+        }
+
         public async Task Load()
         {
-            // Чтение конфиг файла
-            MessageBox.Show("Чтение конфиг файла...");
+            _config = await _getConfigQuery.Execute();
+            ConfigLoaded?.Invoke();
         }
     }
 }

@@ -68,6 +68,8 @@
     <Compile Include="Commands\ICreateEmployeeSummaryReportCommand.cs" />
     <Compile Include="Models\CompensationResult.cs" />
     <Compile Include="Models\CompensationTimeSheetDay.cs" />
+    <Compile Include="Models\Config.cs" />
+    <Compile Include="Queries\IGetConfigQuery.cs" />
     <Compile Include="Services\ICompensationTypeCalculator.cs" />
     <Compile Include="Models\MealCompensation.cs" />
     <Compile Include="Models\EmployeeFromTimeSheet.cs" />

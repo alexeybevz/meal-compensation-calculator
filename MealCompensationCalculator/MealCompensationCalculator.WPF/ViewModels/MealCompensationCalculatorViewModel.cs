@@ -6,12 +6,43 @@ namespace MealCompensationCalculator.WPF.ViewModels
 {
     public class MealCompensationCalculatorViewModel : ViewModelBase
     {
-        private MealCompensationCalculatorViewModel(ConfigStore configStore)
+        private bool _isLoading;
+        public bool IsLoading
         {
-            LoadConfigCommand = new LoadConfigCommand(configStore);
+            get
+            {
+                return _isLoading;
+            }
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
+            }
         }
 
+        private string _errorMessage;
+        public string ErrorMessage
+        {
+            get
+            {
+                return _errorMessage;
+            }
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged(nameof(ErrorMessage));
+                OnPropertyChanged(nameof(HasErrorMessage));
+            }
+        }
+
+        public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
+
         public ICommand LoadConfigCommand;
+
+        private MealCompensationCalculatorViewModel(ConfigStore configStore)
+        {
+            LoadConfigCommand = new LoadConfigCommand(this, configStore);
+        }
 
         public static MealCompensationCalculatorViewModel LoadViewModel(ConfigStore configStore)
         {
