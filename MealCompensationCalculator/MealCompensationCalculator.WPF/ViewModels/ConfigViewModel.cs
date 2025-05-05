@@ -49,20 +49,8 @@ namespace MealCompensationCalculator.WPF.ViewModels
         {
             var timeSpanStringFormat = @"hh\:mm";
 
-            DayCompensationViewModel = new MealCompensationViewModel()
-            {
-                CompensationName = "Дневная компенсация",
-                CompensationAmount = _configStore.Config.DayCompensation.Compensation,
-                StartTimeCompensation = _configStore.Config.DayCompensation.StartTimeCompensation.ToString(timeSpanStringFormat),
-                EndTimeCompensation = _configStore.Config.DayCompensation.EndTimeCompensation.ToString(timeSpanStringFormat),
-            };
-            DayEveningCompensationViewModel = new MealCompensationViewModel()
-            {
-                CompensationName = "Дневная и вечерняя компенсация",
-                CompensationAmount = _configStore.Config.DayEveningCompensation.Compensation,
-                StartTimeCompensation = _configStore.Config.DayEveningCompensation.StartTimeCompensation.ToString(timeSpanStringFormat),
-                EndTimeCompensation = _configStore.Config.DayEveningCompensation.EndTimeCompensation.ToString(timeSpanStringFormat),
-            };
+            DayCompensationViewModel = new MealCompensationViewModel("Дневная компенсация", _configStore.Config.DayCompensation);
+            DayEveningCompensationViewModel = new MealCompensationViewModel("Дневная и вечерняя компенсация", _configStore.Config.DayEveningCompensation);
             ReportLocationViewModel = new ReportLocationViewModel()
             {
                 PathToReport = _configStore.Config.PathToSaveReports

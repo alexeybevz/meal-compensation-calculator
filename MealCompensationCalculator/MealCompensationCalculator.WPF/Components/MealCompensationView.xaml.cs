@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace MealCompensationCalculator.WPF.Components
 {
@@ -10,6 +11,12 @@ namespace MealCompensationCalculator.WPF.Components
         public MealCompensationView()
         {
             InitializeComponent();
+        }
+
+        private void TextBox_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            var tb = (TextBox) sender;
+            tb.SelectAll();
         }
     }
 }

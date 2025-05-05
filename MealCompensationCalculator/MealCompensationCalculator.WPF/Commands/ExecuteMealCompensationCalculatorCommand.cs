@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using MealCompensationCalculator.BusinessLogic.Commands;
 using MealCompensationCalculator.BusinessLogic.Queries;
 using MealCompensationCalculator.BusinessLogic.Services.CompensationCalculator;
-using MealCompensationCalculator.Domain.Models;
 using MealCompensationCalculator.WPF.ViewModels;
 using Microsoft.Win32;
 
@@ -22,10 +21,10 @@ namespace MealCompensationCalculator.WPF.Commands
         public override async Task ExecuteAsync(object parameter)
         {
             var vm = _configViewModel.DayCompensationViewModel;
-            var dayCompensation = new MealCompensation(vm.CompensationAmount, TimeSpan.Parse(vm.StartTimeCompensation), TimeSpan.Parse(vm.EndTimeCompensation));
+            var dayCompensation = vm.GetCurrentSettingsOfMealCompensation();
 
             vm = _configViewModel.DayEveningCompensationViewModel;
-            var dayEveningCompensation = new MealCompensation(vm.CompensationAmount, TimeSpan.Parse(vm.StartTimeCompensation), TimeSpan.Parse(vm.EndTimeCompensation));
+            var dayEveningCompensation = vm.GetCurrentSettingsOfMealCompensation();
 
             var pathToOutputDirectory = _configViewModel.ReportLocationViewModel.PathToReport;
 

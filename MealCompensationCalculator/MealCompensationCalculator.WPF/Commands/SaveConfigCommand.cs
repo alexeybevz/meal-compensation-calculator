@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MealCompensationCalculator.Domain.Models;
 using MealCompensationCalculator.WPF.Stores;
 using MealCompensationCalculator.WPF.ViewModels;
@@ -20,10 +19,10 @@ namespace MealCompensationCalculator.WPF.Commands
         public override async Task ExecuteAsync(object parameter)
         {
             var vm = _configViewModel.DayCompensationViewModel;
-            var dayCompensation = new MealCompensation(vm.CompensationAmount, TimeSpan.Parse(vm.StartTimeCompensation), TimeSpan.Parse(vm.EndTimeCompensation));
+            var dayCompensation = vm.GetCurrentSettingsOfMealCompensation();
 
             vm = _configViewModel.DayEveningCompensationViewModel;
-            var dayEveningCompensation = new MealCompensation(vm.CompensationAmount, TimeSpan.Parse(vm.StartTimeCompensation), TimeSpan.Parse(vm.EndTimeCompensation));
+            var dayEveningCompensation = vm.GetCurrentSettingsOfMealCompensation();
 
             var pathToOutputDirectory = _configViewModel.ReportLocationViewModel.PathToReport;
 
