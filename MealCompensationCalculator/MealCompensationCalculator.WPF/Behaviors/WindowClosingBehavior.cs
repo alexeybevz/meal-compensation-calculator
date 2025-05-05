@@ -16,8 +16,12 @@ namespace MealCompensationCalculator.WPF.Behaviors
 
         private static void OnClosedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is Window window)
+            var isWindow = d is Window;
+
+            if (isWindow)
             {
+                var window = (Window) d;
+
                 window.Closed -= Window_Closed;
                 if (e.NewValue != null)
                     window.Closed += Window_Closed;

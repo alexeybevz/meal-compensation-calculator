@@ -8,7 +8,10 @@ namespace MealCompensationCalculator.WPF.Commands
         private bool _isExecuting;
         public bool IsExecuting
         {
-            get => _isExecuting;
+            get
+            {
+                return _isExecuting;
+            }
             set
             {
                 _isExecuting = value;
