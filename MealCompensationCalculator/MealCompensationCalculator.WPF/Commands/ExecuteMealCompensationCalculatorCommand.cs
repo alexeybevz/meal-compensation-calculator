@@ -12,10 +12,13 @@ namespace MealCompensationCalculator.WPF.Commands
 {
     public class ExecuteMealCompensationCalculatorCommand : AsyncCommandBase
     {
+        private readonly RunCalculatorViewModel _runCalculatorViewModel;
         private readonly ConfigViewModel _configViewModel;
 
-        public ExecuteMealCompensationCalculatorCommand(ConfigViewModel configViewModel)
+        public ExecuteMealCompensationCalculatorCommand(
+            RunCalculatorViewModel runCalculatorViewModel, ConfigViewModel configViewModel)
         {
+            _runCalculatorViewModel = runCalculatorViewModel;
             _configViewModel = configViewModel;
         }
 
@@ -55,6 +58,10 @@ namespace MealCompensationCalculator.WPF.Commands
             var mistakesReportServiceTask = mistakesReportService.Execute(mistakesReportPath, compensationResults);
 
             await Task.WhenAll(summaryReportServiceTask, mistakesReportServiceTask);
+
+            _runCalculatorViewModel.IsNotificationVisible = true;
+            await Task.Delay(3000);
+            _runCalculatorViewModel.IsNotificationVisible = false;
         }
 
         private string GetPathOfExcelFileWithTotalPayOfEmployees()

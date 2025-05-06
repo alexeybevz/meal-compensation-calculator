@@ -73,6 +73,9 @@
     <Compile Include="Components\ReportLocation.xaml.cs">
       <DependentUpon>ReportLocation.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\RunCalculatorView.xaml.cs">
+      <DependentUpon>RunCalculatorView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Stores\ConfigStore.cs" />
     <Compile Include="ViewModels\ConfigViewModel.cs" />
@@ -80,6 +83,7 @@
     <Compile Include="ViewModels\MealCompensationCalculatorViewModel.cs" />
     <Compile Include="ViewModels\MealCompensationViewModel.cs" />
     <Compile Include="ViewModels\ReportLocationViewModel.cs" />
+    <Compile Include="ViewModels\RunCalculatorViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\MealCompensationCalculatorView.xaml.cs">
       <DependentUpon>MealCompensationCalculatorView.xaml</DependentUpon>
@@ -93,6 +97,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\ReportLocation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\RunCalculatorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

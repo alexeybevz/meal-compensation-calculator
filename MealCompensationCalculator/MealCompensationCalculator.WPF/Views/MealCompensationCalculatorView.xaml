@@ -81,17 +81,14 @@
                 </Grid.Style>
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <components:ConfigView Grid.Row="0"
                                        DataContext="{Binding ConfigViewModel}" />
-                <Button Style="{StaticResource PrimaryButton}"
-                        Grid.Row="1"
-                        Margin="10"
-                        Content="Рассчитать компенсацию"
-                        Command="{Binding ExecuteMealCompensationCalculatorCommand}"/>
+                <components:RunCalculatorView Grid.Row="1"
+                                              DataContext="{Binding RunCalculatorViewModel}"/>
             </Grid>
         </Grid>
     </Grid>

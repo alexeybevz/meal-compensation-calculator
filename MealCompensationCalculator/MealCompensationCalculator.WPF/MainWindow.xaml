@@ -9,7 +9,8 @@
         mc:Ignorable="d"
         Title="Расчет компенсации питания сотрудников"
         WindowStartupLocation="CenterScreen"
-        Height="450"
+        ResizeMode="CanMinimize"
+        Height="480"
         Width="800"
         behaviors:WindowClosingBehavior.Closed="{Binding MyClosedCommand}">
     <Grid>

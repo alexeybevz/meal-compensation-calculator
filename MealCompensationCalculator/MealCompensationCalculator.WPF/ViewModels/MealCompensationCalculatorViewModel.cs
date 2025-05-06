@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using MealCompensationCalculator.WPF.Commands;
 using MealCompensationCalculator.WPF.Stores;
 
@@ -39,15 +38,15 @@ namespace MealCompensationCalculator.WPF.ViewModels
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
         public ConfigViewModel ConfigViewModel { get; }
+        public RunCalculatorViewModel RunCalculatorViewModel { get; }
 
         public ICommand LoadConfigCommand { get; }
-        public ICommand ExecuteMealCompensationCalculatorCommand { get; }
 
         private MealCompensationCalculatorViewModel(ConfigStore configStore)
         {
             ConfigViewModel = new ConfigViewModel(configStore);
+            RunCalculatorViewModel = new RunCalculatorViewModel(ConfigViewModel);
             LoadConfigCommand = new LoadConfigCommand(this, configStore);
-            ExecuteMealCompensationCalculatorCommand = new ExecuteMealCompensationCalculatorCommand(ConfigViewModel);
         }
 
         public static MealCompensationCalculatorViewModel LoadViewModel(ConfigStore configStore)
@@ -55,12 +54,6 @@ namespace MealCompensationCalculator.WPF.ViewModels
             var vm = new MealCompensationCalculatorViewModel(configStore);
             vm.LoadConfigCommand?.Execute(null);
             return vm;
-        }
-
-        protected override void Dispose()
-        {
-            MessageBox.Show("asd");
-            base.Dispose();
         }
     }
 }
