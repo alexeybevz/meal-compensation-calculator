@@ -59,10 +59,12 @@
                   Orientation="Horizontal"
                   HorizontalAlignment="Center">
                 <TextBox Width="32"
+                         MaxLength="3"
                          Text="{Binding StartTimeCompensationHour, UpdateSourceTrigger=PropertyChanged}" GotFocus="TextBox_OnGotFocus" />
                 <TextBlock Text=":"
                            Padding="4" />
                 <TextBox Width="32"
+                         MaxLength="3"
                          Text="{Binding StartTimeCompensationMinute, UpdateSourceTrigger=PropertyChanged}" GotFocus="TextBox_OnGotFocus" />
             </StackPanel>
 
@@ -78,10 +80,12 @@
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
                 <TextBox Width="32"
+                         MaxLength="3"
                          Text="{Binding EndTimeCompensationHour, UpdateSourceTrigger=PropertyChanged}" GotFocus="TextBox_OnGotFocus" />
                 <TextBlock Text=":"
                            Padding="4" />
                 <TextBox Width="32"
+                         MaxLength="3"
                          Text="{Binding EndTimeCompensationMinute, UpdateSourceTrigger=PropertyChanged}" GotFocus="TextBox_OnGotFocus" />
             </StackPanel>
         </Grid>
