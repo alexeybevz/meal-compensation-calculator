@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MealCompensationCalculator.BusinessLogic.Commands;
 using MealCompensationCalculator.BusinessLogic.Queries;
 using MealCompensationCalculator.BusinessLogic.Services.CompensationCalculator;
+using MealCompensationCalculator.Domain.Models;
 using MealCompensationCalculator.WPF.ViewModels;
 using Microsoft.Win32;
 
@@ -34,19 +35,26 @@ namespace MealCompensationCalculator.WPF.Commands
             var pathOfExcelFileWithTimeSheetOfEmployees = GetPathOfExcelFileWithTimeSheetOfEmployees();
             var timeSheetOfEmployeesService = new GetTimeSheetOfEmployeesFromExcel(pathOfExcelFileWithTimeSheetOfEmployees);
 
-            var timeSheetOfEmployees = await timeSheetOfEmployeesService.Execute();
-            var totalPayOfEmployees = await totalPayOfEmployeesService.Execute();
+            Task<TotalPayOfEmployees> totalPayOfEmployeesServiceTask = totalPayOfEmployeesService.Execute();
+            Task<TimeSheetOfEmployees> timeSheetOfEmployeesServiceTask = timeSheetOfEmployeesService.Execute();
+
+            await Task.WhenAll(totalPayOfEmployeesServiceTask, timeSheetOfEmployeesServiceTask);
+
+            var totalPayOfEmployees = totalPayOfEmployeesServiceTask.Result;
+            var timeSheetOfEmployees = timeSheetOfEmployeesServiceTask.Result;
 
             var compensationCalculator = new CompensationCalculator(dayCompensation, dayEveningCompensation);
             var compensationResults = await compensationCalculator.Execute(totalPayOfEmployees, timeSheetOfEmployees);
 
-            var path1 = Path.Combine(pathToOutputDirectory, "результат.xlsx");
-            var service1 = new CreateEmployeeSummaryReportToExcelCommand(dayEveningCompensation);
-            await service1.Execute(path1, totalPayOfEmployees.StartPeriod, totalPayOfEmployees.EndPeriod, compensationResults);
+            var summaryReportPath = Path.Combine(pathToOutputDirectory, $"Сводный отчет ({totalPayOfEmployees.StartPeriod.ToShortDateString()} - {totalPayOfEmployees.EndPeriod.ToShortDateString()}) на {DateTime.Now.ToShortDateString()}.xlsx");
+            var summaryReportService = new CreateEmployeeSummaryReportToExcelCommand(dayEveningCompensation);
+            var summaryReportServiceTask = summaryReportService.Execute(summaryReportPath, totalPayOfEmployees.StartPeriod, totalPayOfEmployees.EndPeriod, compensationResults);
 
-            var path2 = Path.Combine(pathToOutputDirectory, "несоответствия.xlsx");
-            var service2 = new CreateEmployeePaymentsMistakesReportToExcelCommand(dayCompensation, dayEveningCompensation);
-            await service2.Execute(path2, compensationResults);
+            var mistakesReportPath = Path.Combine(pathToOutputDirectory, $"Отчет по несоответствиям ({totalPayOfEmployees.StartPeriod.ToShortDateString()} - {totalPayOfEmployees.EndPeriod.ToShortDateString()}) на {DateTime.Now.ToShortDateString()}.xlsx");
+            var mistakesReportService = new CreateEmployeePaymentsMistakesReportToExcelCommand(dayCompensation, dayEveningCompensation);
+            var mistakesReportServiceTask = mistakesReportService.Execute(mistakesReportPath, compensationResults);
+
+            await Task.WhenAll(summaryReportServiceTask, mistakesReportServiceTask);
         }
 
         private string GetPathOfExcelFileWithTotalPayOfEmployees()
