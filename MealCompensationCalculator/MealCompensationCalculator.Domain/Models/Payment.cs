@@ -9,24 +9,24 @@ namespace MealCompensationCalculator.Domain.Models
         /// </summary>
         public DateTime TransactionDateTime { get; set; }
         /// <summary>
-        /// Стоимость заказа
+        /// Стоимость заказа (руб.)
         /// </summary>
         public decimal Cost { get; set; }
         /// <summary>
-        /// Безналичная оплата
+        /// Не оплачено (руб.)
         /// </summary>
-        public decimal CostCashless { get; set; }
+        public decimal CostUnpaid { get; set; }
         /// <summary>
-        /// Наличная оплата
+        /// Оплачено (руб.)
         /// </summary>
-        public decimal CostCash { get; set; }
+        public decimal CostPaid { get; set; }
 
-        public Payment(DateTime transactionDateTime, decimal cost, decimal costCashless, decimal costCash)
+        public Payment(DateTime transactionDateTime, decimal cost, decimal costUnpaid, decimal costPaid)
         {
             TransactionDateTime = transactionDateTime;
             Cost = cost;
-            CostCashless = costCashless;
-            CostCash = costCash;
+            CostUnpaid = costUnpaid;
+            CostPaid = costPaid;
         }
     }
 }

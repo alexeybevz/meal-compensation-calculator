@@ -98,7 +98,7 @@ namespace MealCompensationCalculator.BusinessLogic.Commands
                 ws.Cell(row, col++).Value = compensationResult.TotalCompensation;
                 col++;
 
-                var costCash = compensationResult.EmployeePayments.Payments.Sum(x => x.CostCash);
+                var costCash = compensationResult.EmployeePayments.Payments.Sum(x => x.CostPaid);
                 totalCostCash += costCash;
                 ws.Cell(row, col).Value = costCash;
 
