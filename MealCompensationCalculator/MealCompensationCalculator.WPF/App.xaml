@@ -132,5 +132,39 @@
             <Setter Property="FontSize"
                     Value="14" />
         </Style>
+
+        <Style x:Key="HyperlinkButtonStyle"
+               TargetType="Button">
+            <Setter Property="Foreground"
+                    Value="#195AE0"/>
+            <Setter Property="Cursor"
+                    Value="Arrow" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <TextBlock TextDecorations="None">
+                            <ContentPresenter />
+                        </TextBlock>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground"
+                            Value="#195AE0" />
+                    <Setter Property="Cursor"
+                            Value="Hand" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <TextBlock TextDecorations="Underline">
+                                    <ContentPresenter />
+                                </TextBlock>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Application.Resources>
 </Application>

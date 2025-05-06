@@ -20,10 +20,12 @@ namespace MealCompensationCalculator.WPF.ViewModels
         }
         
         public ICommand ChoiceReportLocationCommand { get; }
+        public ICommand OpenReportLocationCommand { get; }
 
         public ReportLocationViewModel()
         {
             ChoiceReportLocationCommand = new ChoiceReportLocationCommand(this);
+            OpenReportLocationCommand = new OpenReportLocationCommand(this);
         }
     }
 }

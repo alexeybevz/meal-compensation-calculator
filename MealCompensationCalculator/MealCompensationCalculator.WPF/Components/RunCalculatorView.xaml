@@ -17,11 +17,12 @@
 
         <Button Style="{StaticResource PrimaryButton}"
                 Grid.Row="0"
-                Margin="10"
+                Margin="0 5 0 0"
                 Content="Рассчитать компенсацию"
                 Command="{Binding ExecuteMealCompensationCalculatorCommand}"/>
         <TextBlock
             Grid.Row="1"
+            Margin="0 5 0 0"
             TextAlignment="Center"
             Background="MediumSeaGreen"
             Visibility="{Binding IsNotificationVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -31,6 +32,7 @@
             FontSize="14"/>
         <TextBlock
             Grid.Row="1"
+            Margin="0 5 0 0"
             TextAlignment="Center"
             Foreground="Crimson"
             Visibility="{Binding HasErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}"
