@@ -38,7 +38,7 @@ namespace MealCompensationCalculator.WPF.Commands
             var totalPayOfEmployees = await totalPayOfEmployeesService.Execute();
 
             var compensationCalculator = new CompensationCalculator(dayCompensation, dayEveningCompensation);
-            var compensationResults = compensationCalculator.Execute(totalPayOfEmployees, timeSheetOfEmployees);
+            var compensationResults = await compensationCalculator.Execute(totalPayOfEmployees, timeSheetOfEmployees);
 
             var path1 = Path.Combine(pathToOutputDirectory, "результат.xlsx");
             var service1 = new CreateEmployeeSummaryReportToExcelCommand(dayEveningCompensation);

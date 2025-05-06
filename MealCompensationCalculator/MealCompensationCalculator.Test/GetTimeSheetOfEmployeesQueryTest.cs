@@ -12,10 +12,10 @@ namespace MealCompensationCalculator.Test
     public class GetTimeSheetOfEmployeesQueryTest
     {
         [Fact]
-        public void GetTimeSheetOfEmployeesQueryMockTest()
+        public async void GetTimeSheetOfEmployeesQueryMockTest()
         {
             var mock = new GetTimeSheetOfEmployeesQueryMock().Execute().Object;
-            var timeSheetOfEmployees = mock.Execute().Result;
+            var timeSheetOfEmployees = await mock.Execute();
 
             Assert.True(timeSheetOfEmployees.EmployeesTimeSheets.SelectMany(x => x.TimeSheetDays).Count() == 1);
         }

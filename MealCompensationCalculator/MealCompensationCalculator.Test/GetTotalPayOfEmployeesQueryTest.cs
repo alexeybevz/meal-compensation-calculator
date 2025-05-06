@@ -12,10 +12,10 @@ namespace MealCompensationCalculator.Test
     public class GetTotalPayOfEmployeesQueryTest
     {
         [Fact]
-        public void GetEmployeeTotalPaymentsQueryMockTest()
+        public async void GetEmployeeTotalPaymentsQueryMockTest()
         {
             var mock = new GetTotalPayOfEmployeesQueryMock().Execute().Object;
-            var totalPayOfEmployees = mock.Execute().Result;
+            var totalPayOfEmployees = await mock.Execute();
 
             Assert.True(totalPayOfEmployees.EmployeesTotalPayments.SelectMany(x => x.Payments).Sum(x => x.Cost) == 78);
         }

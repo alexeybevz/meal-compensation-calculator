@@ -13,19 +13,19 @@ namespace MealCompensationCalculator.Test
     public class DayEveningCompensationCalculatorTest
     {
         [Fact]
-        public void CalcDayEveningCompensationTest()
+        public async void CalcDayEveningCompensationTest()
         {
             var getTotalPayOfEmployeesQueryMock = new GetTotalPayOfEmployeesQueryMock().Execute().Object;
-            var totalPayOfEmployees = getTotalPayOfEmployeesQueryMock.Execute().Result;
+            var totalPayOfEmployees = await getTotalPayOfEmployeesQueryMock.Execute();
 
             var getTimeSheetOfEmployeesQueryMock = new GetTimeSheetOfEmployeesQueryMock().Execute().Object;
-            var timeSheetOfEmployees = getTimeSheetOfEmployeesQueryMock.Execute().Result;
+            var timeSheetOfEmployees = await getTimeSheetOfEmployeesQueryMock.Execute();
 
             var dayCompensation = new MealCompensation(70, new TimeSpan(11, 0, 0), new TimeSpan(14, 0, 0));
             var dayEveningCompensation = new MealCompensation(110, new TimeSpan(16, 30, 0), new TimeSpan(17, 30, 0));
 
             var compensationCalculator = new CompensationCalculator(dayCompensation, dayEveningCompensation);
-            var result = compensationCalculator.Execute(totalPayOfEmployees, timeSheetOfEmployees);
+            var result = await compensationCalculator.Execute(totalPayOfEmployees, timeSheetOfEmployees);
 
             Assert.True(result.Sum(x => x.TotalCompensation) == 1381);
 

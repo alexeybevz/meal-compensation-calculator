@@ -24,7 +24,7 @@ namespace MealCompensationCalculator.Test
             var dayEveningCompensation = new MealCompensation(110, new TimeSpan(16, 30, 0), new TimeSpan(17, 30, 0));
 
             var compensationCalculator = new CompensationCalculator(dayCompensation, dayEveningCompensation);
-            var compensationResults = compensationCalculator.Execute(totalPayOfEmployees, timeSheetOfEmployees);
+            var compensationResults = await compensationCalculator.Execute(totalPayOfEmployees, timeSheetOfEmployees);
 
             path = @"C:\Users\abevz\Desktop\несоответствия.xlsx";
             var service = new CreateEmployeePaymentsMistakesReportToExcelCommand(dayCompensation, dayEveningCompensation);
