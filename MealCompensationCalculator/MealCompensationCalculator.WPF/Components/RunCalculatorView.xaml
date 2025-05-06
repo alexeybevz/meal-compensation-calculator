@@ -29,5 +29,14 @@
             Width="150"
             Padding="3"
             FontSize="14"/>
+        <TextBlock
+            Grid.Row="1"
+            TextAlignment="Center"
+            Foreground="Crimson"
+            Visibility="{Binding HasErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}"
+            Text="{Binding ErrorMessage}"
+            TextWrapping="Wrap"
+            Padding="3"
+            FontSize="12"/>
     </Grid>
 </UserControl>

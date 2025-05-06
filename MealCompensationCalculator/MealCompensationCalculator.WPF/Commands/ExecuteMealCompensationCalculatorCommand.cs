@@ -24,44 +24,53 @@ namespace MealCompensationCalculator.WPF.Commands
 
         public override async Task ExecuteAsync(object parameter)
         {
-            var vm = _configViewModel.DayCompensationViewModel;
-            var dayCompensation = vm.GetCurrentSettingsOfMealCompensation();
+            _runCalculatorViewModel.ErrorMessage = string.Empty;
 
-            vm = _configViewModel.DayEveningCompensationViewModel;
-            var dayEveningCompensation = vm.GetCurrentSettingsOfMealCompensation();
+            try
+            {
+                var vm = _configViewModel.DayCompensationViewModel;
+                var dayCompensation = vm.GetCurrentSettingsOfMealCompensation();
 
-            var pathToOutputDirectory = _configViewModel.ReportLocationViewModel.PathToReport;
+                vm = _configViewModel.DayEveningCompensationViewModel;
+                var dayEveningCompensation = vm.GetCurrentSettingsOfMealCompensation();
 
-            var pathOfExcelFileWithTotalPayOfEmployees = GetPathOfExcelFileWithTotalPayOfEmployees();
-            var totalPayOfEmployeesService = new GetTotalPayOfEmployeesFromExcel(pathOfExcelFileWithTotalPayOfEmployees);
+                var pathToOutputDirectory = _configViewModel.ReportLocationViewModel.PathToReport;
 
-            var pathOfExcelFileWithTimeSheetOfEmployees = GetPathOfExcelFileWithTimeSheetOfEmployees();
-            var timeSheetOfEmployeesService = new GetTimeSheetOfEmployeesFromExcel(pathOfExcelFileWithTimeSheetOfEmployees);
+                var pathOfExcelFileWithTotalPayOfEmployees = GetPathOfExcelFileWithTotalPayOfEmployees();
+                var totalPayOfEmployeesService = new GetTotalPayOfEmployeesFromExcel(pathOfExcelFileWithTotalPayOfEmployees);
 
-            Task<TotalPayOfEmployees> totalPayOfEmployeesServiceTask = totalPayOfEmployeesService.Execute();
-            Task<TimeSheetOfEmployees> timeSheetOfEmployeesServiceTask = timeSheetOfEmployeesService.Execute();
+                var pathOfExcelFileWithTimeSheetOfEmployees = GetPathOfExcelFileWithTimeSheetOfEmployees();
+                var timeSheetOfEmployeesService = new GetTimeSheetOfEmployeesFromExcel(pathOfExcelFileWithTimeSheetOfEmployees);
 
-            await Task.WhenAll(totalPayOfEmployeesServiceTask, timeSheetOfEmployeesServiceTask);
+                Task<TotalPayOfEmployees> totalPayOfEmployeesServiceTask = totalPayOfEmployeesService.Execute();
+                Task<TimeSheetOfEmployees> timeSheetOfEmployeesServiceTask = timeSheetOfEmployeesService.Execute();
 
-            var totalPayOfEmployees = totalPayOfEmployeesServiceTask.Result;
-            var timeSheetOfEmployees = timeSheetOfEmployeesServiceTask.Result;
+                await Task.WhenAll(totalPayOfEmployeesServiceTask, timeSheetOfEmployeesServiceTask);
 
-            var compensationCalculator = new CompensationCalculator(dayCompensation, dayEveningCompensation);
-            var compensationResults = await compensationCalculator.Execute(totalPayOfEmployees, timeSheetOfEmployees);
+                var totalPayOfEmployees = totalPayOfEmployeesServiceTask.Result;
+                var timeSheetOfEmployees = timeSheetOfEmployeesServiceTask.Result;
 
-            var summaryReportPath = Path.Combine(pathToOutputDirectory, $"Сводный отчет ({totalPayOfEmployees.StartPeriod.ToShortDateString()} - {totalPayOfEmployees.EndPeriod.ToShortDateString()}) на {DateTime.Now.ToShortDateString()}.xlsx");
-            var summaryReportService = new CreateEmployeeSummaryReportToExcelCommand(dayEveningCompensation);
-            var summaryReportServiceTask = summaryReportService.Execute(summaryReportPath, totalPayOfEmployees.StartPeriod, totalPayOfEmployees.EndPeriod, compensationResults);
+                var compensationCalculator = new CompensationCalculator(dayCompensation, dayEveningCompensation);
+                var compensationResults = await compensationCalculator.Execute(totalPayOfEmployees, timeSheetOfEmployees);
 
-            var mistakesReportPath = Path.Combine(pathToOutputDirectory, $"Отчет по несоответствиям ({totalPayOfEmployees.StartPeriod.ToShortDateString()} - {totalPayOfEmployees.EndPeriod.ToShortDateString()}) на {DateTime.Now.ToShortDateString()}.xlsx");
-            var mistakesReportService = new CreateEmployeePaymentsMistakesReportToExcelCommand(dayCompensation, dayEveningCompensation);
-            var mistakesReportServiceTask = mistakesReportService.Execute(mistakesReportPath, compensationResults);
+                var summaryReportPath = Path.Combine(pathToOutputDirectory, $"Сводный отчет ({totalPayOfEmployees.StartPeriod.ToShortDateString()} - {totalPayOfEmployees.EndPeriod.ToShortDateString()}) на {DateTime.Now.ToShortDateString()}.xlsx");
+                var summaryReportService = new CreateEmployeeSummaryReportToExcelCommand(dayEveningCompensation);
+                var summaryReportServiceTask = summaryReportService.Execute(summaryReportPath, totalPayOfEmployees.StartPeriod, totalPayOfEmployees.EndPeriod, compensationResults);
 
-            await Task.WhenAll(summaryReportServiceTask, mistakesReportServiceTask);
+                var mistakesReportPath = Path.Combine(pathToOutputDirectory, $"Отчет по несоответствиям ({totalPayOfEmployees.StartPeriod.ToShortDateString()} - {totalPayOfEmployees.EndPeriod.ToShortDateString()}) на {DateTime.Now.ToShortDateString()}.xlsx");
+                var mistakesReportService = new CreateEmployeePaymentsMistakesReportToExcelCommand(dayCompensation, dayEveningCompensation);
+                var mistakesReportServiceTask = mistakesReportService.Execute(mistakesReportPath, compensationResults);
 
-            _runCalculatorViewModel.IsNotificationVisible = true;
-            await Task.Delay(3000);
-            _runCalculatorViewModel.IsNotificationVisible = false;
+                await Task.WhenAll(summaryReportServiceTask, mistakesReportServiceTask);
+
+                _runCalculatorViewModel.IsNotificationVisible = true;
+                await Task.Delay(3000);
+                _runCalculatorViewModel.IsNotificationVisible = false;
+            }
+            catch (Exception e)
+            {
+                _runCalculatorViewModel.ErrorMessage = $"Ошибка: {e.Message}";
+            }
         }
 
         private string GetPathOfExcelFileWithTotalPayOfEmployees()
