@@ -1,8 +1,5 @@
 ﻿using System.Windows;
-using MealCompensationCalculator.BusinessLogic.Commands;
-using MealCompensationCalculator.BusinessLogic.Queries;
-using MealCompensationCalculator.WPF.Stores;
-using MealCompensationCalculator.WPF.ViewModels;
+using MealCompensationCalculator.WPF.Ioc;
 
 namespace MealCompensationCalculator.WPF
 {
@@ -13,7 +10,9 @@ namespace MealCompensationCalculator.WPF
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            MainWindow = new MainWindow() { DataContext = new MainViewModel(new ConfigStore(new GetConfigQuery(), new SaveConfigCommand())) };
+            IocKernel.Initialize(new IocConfiguration());
+
+            MainWindow = IocKernel.Get<MainWindow>();
             MainWindow.Show();
         }
     }

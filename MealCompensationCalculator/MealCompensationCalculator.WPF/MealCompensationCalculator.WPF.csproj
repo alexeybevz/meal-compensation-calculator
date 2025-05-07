@@ -81,6 +81,8 @@
     <Compile Include="Components\RunCalculatorView.xaml.cs">
       <DependentUpon>RunCalculatorView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Ioc\IocConfiguration.cs" />
+    <Compile Include="Ioc\IocKernel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Stores\ConfigStore.cs" />
     <Compile Include="ViewModels\ConfigViewModel.cs" />

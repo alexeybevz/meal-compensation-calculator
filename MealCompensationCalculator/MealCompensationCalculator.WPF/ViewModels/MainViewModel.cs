@@ -10,9 +10,9 @@ namespace MealCompensationCalculator.WPF.ViewModels
 
         public ICommand MyClosedCommand { get; }
 
-        public MainViewModel(ConfigStore configStore)
+        public MainViewModel(ConfigStore configStore, MealCompensationCalculatorViewModel mealCompensationCalculatorViewModel)
         {
-            MealCompensationCalculatorViewModel = MealCompensationCalculatorViewModel.LoadViewModel(configStore);
+            MealCompensationCalculatorViewModel = mealCompensationCalculatorViewModel;
             MyClosedCommand = new SaveConfigCommand(MealCompensationCalculatorViewModel.ConfigViewModel, configStore);
         }
     }
